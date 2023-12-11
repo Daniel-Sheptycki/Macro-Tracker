@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Macro Tracker</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:wght@400;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/108b272961.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../src/js/index.js"></script>
+    <link rel="stylesheet" href="../src/css/dashboard.css" />
+  </head>
+  <body onload="generalStartup()">
+    <header id="header">
+      <div id="header-title">
+        <h1>MACRO TRACKER</h1>
+        <p>Your solution to food</p>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="sign-in.html" id="sign-in-link">Sign In</a></li>
+        </ul>
+      </nav>
+      <h3>Dashboard</h3>
+      <nav>
+        <ul>
+          <li><a href="add-macros.html">Add Macros</a></li>
+          <li><a href="statistics.html">Statistics</a></li>
+          <li><a href="my-food.html">My Food</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main">
+      <header>
+        <h2>Dashboard</h2>
+      </header>
+      <section id="dashboard-options">
+        <nav>
+          <ul>
+            <li>
+              <a href="statistics.html">
+                <article>
+                  <header>
+                    <div>
+                      <i class="fa-solid fa-chart-line"></i>
+                      <h3>Statistics</h3>
+                      <p>
+                        <strong>Track</strong> your <strong>Current</strong> and
+                        <strong>Previous</strong> Macros
+                      </p>
+                    </div>
+                  </header>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a href="add-macros.html">
+                <article>
+                  <header>
+                    <div>
+                      <i class="fa-solid fa-circle-plus"></i>
+                      <h3>Add Macros</h3>
+                      <p><strong>Add Macros</strong> to Today's Tally</p>
+                    </div>
+                  </header>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a href="my-food.html">
+                <article>
+                  <header>
+                    <div>
+                      <i class="fa-solid fa-utensils"></i>
+                      <h3>My Food</h3>
+                      <p>
+                        <strong>Review Create</strong> and
+                        <strong>Edit</strong> your Meals.
+                      </p>
+                    </div>
+                  </header>
+                </article>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </main>
+  </body>
+</html>

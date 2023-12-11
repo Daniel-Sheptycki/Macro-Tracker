@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <link rel="stylesheet" href="../src/css/signin.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:wght@400;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="../src/js/index.js"></script>
+  </head>
+  <body onload="generalStartup()">
+    <header id="dashboard-header">
+      <div id="header-title">
+        <h1>MACRO TRACKER</h1>
+        <p>Your solution to food</p>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li id="dashboard-link">
+            <a href="/pages/dashboard.html">Dashboard</a>
+          </li>
+          <li><a href="/pages/sign-in.html" id="sign-in-link">Sign In</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="sign-in-field">
+        <h2>Sign In</h2>
+        <form>
+          <div class="all-inputs-field-container">
+            <div class="input-field-container">
+              <label for="user-name">Username</label>
+              <input
+                type="text"
+                placeholder="Username"
+                id="sign-in-user-name"
+              />
+            </div>
+            <div class="input-field-container">
+              <label for="user-password">Password</label>
+              <input
+                type="password"
+                placeholder="Password"
+                id="sign-in-user-password"
+              />
+            </div>
+          </div>
+          <button type="button" id="sign-in-button">Sign In</button>
+        </form>
+        <div id="other-options-container">
+          <button type="button">Forgot Password</button>
+          <div id="create-account-options">
+            <p>Dont have an account?</p>
+            <button id="create-account-switch-button">Create One Here</button>
+          </div>
+        </div>
+      </section>
+      <section id="create-account-field">
+        <header>
+          <h2>Create Account</h2>
+          <p>Create an account for free to get started!</p>
+        </header>
+        <form>
+          <div class="all-inputs-field-container">
+            <div class="input-field-container">
+              <label for="user-name">Username</label>
+              <input
+                type="text"
+                placeholder="Username"
+                id="create-account-user-name"
+              />
+            </div>
+            <div class="input-field-container">
+              <label for="user-password">Password</label>
+              <input
+                type="password"
+                placeholder="Password"
+                id="create-account-user-password"
+              />
+            </div>
+          </div>
+          <button type="button" id="create-account-button">
+            Create Account
+          </button>
+        </form>
+        <div id="other-options-container">
+          <button type="button">Forgot Password</button>
+          <div id="create-account-options">
+            <p>Already have an account?</p>
+            <button id="sign-in-switch-button">Sign In Here</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div id="footer-content-wrapper">
+        <header>
+          <p>&copy; Daniel Sheptycki 2023</p>
+        </header>
+        <nav>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="sign-in.html">Sign In</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+    <script src="../src/js/sign-in.js" type="module"></script>
+  </body>
+</html>

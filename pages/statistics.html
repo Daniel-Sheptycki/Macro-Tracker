@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistics - Macro Tracker</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:wght@400;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/108b272961.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../src/js/index.js"></script>
+    <link rel="stylesheet" href="../src/css/dashboard.css" />
+  </head>
+  <body onload="generalStartup()">
+    <header id="header">
+      <div id="header-title">
+        <h1>MACRO TRACKER</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="sign-in.html" id="sign-in-link">Sign In</a></li>
+        </ul>
+      </nav>
+      <h3>Dashboard</h3>
+      <nav>
+        <ul>
+          <li><a href="add-macros.html">Add Macros</a></li>
+          <li><a href="statistics.html">Statistics</a></li>
+          <li><a href="my-food.html">My Food</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main">
+      <header>
+        <h2>Statistics</h2>
+        <p>View your statistics</p>
+      </header>
+      <section id="main-content-wrapper-statistics">
+        <!-- Be able to see today's calories clear as day, a table to show recipts, each recipt will
+                have a small title of info(Mealname, Time Inputted) and a down arrow that allows the user
+                to expand it and view more. another section to view total calories over the different days,
+                and maybe a line graph to show the chosen macro over time-->
+        <div id="top-row">
+          <section id="todays-macros">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="3">Today's Macros</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="calories-row">
+                  <td><i class="fa-solid fa-bowl-food"></i></td>
+                  <td>Calories:</td>
+                  <td id="calories-table-data"></td>
+                </tr>
+                <tr id="carbs-row">
+                  <td><i class="fa-solid fa-bread-slice"></i></td>
+                  <td>Carbohydrates:</td>
+                  <td id="carbohydrates-table-data"></td>
+                </tr>
+                <tr id="fats-row">
+                  <td><i class="fa-solid fa-burger"></i></td>
+                  <td>Fats:</td>
+                  <td id="fats-table-data"></td>
+                </tr>
+                <tr id="proteiens-row">
+                  <td><i class="fa-solid fa-drumstick-bite"></i></td>
+                  <td>Proteins:</td>
+                  <td id="proteins-table-data"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="todays-macro-inputs">
+            <table>
+              <thead>
+                <tr>
+                  <th>Today's Macro Inputs</th>
+                </tr>
+              </thead>
+              <tbody id="macro-inputs-field"></tbody>
+            </table>
+          </section>
+        </div>
+        <section id="all-time-macros">
+          <select id="graph-macro-choice" name="macros">
+            <option value="days">All Days</option>
+            <option value="today">Today</option>
+          </select>
+          <canvas id="all-time-macros-map"></canvas>
+        </section>
+        <section id="specific-day-macros"></section>
+      </section>
+    </main>
+    <script type="module" src="../src/js/statistics.js"></script>
+  </body>
+</html>
