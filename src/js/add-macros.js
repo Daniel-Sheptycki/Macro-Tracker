@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { collection, getDoc, getFirestore } from "firebase/firestore";
-import { doc, setDoc, getDocs, addDoc } from "firebase/firestore"; 
+import { initializeApp } from "../node_modules/firebase/app/dist/app/index";
+
+import { collection, getDoc, getDocs, getFirestore, setDoc, doc, addDoc } from "../node_modules/firebase/firestore/dist/firestore/index";
 
 const firebaseConfig = {
 

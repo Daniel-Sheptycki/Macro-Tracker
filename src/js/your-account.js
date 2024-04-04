@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "../node_modules/firebase/app/dist/app/index";
 
-import { getDoc, getFirestore } from "firebase/firestore";
+import { getDoc, getFirestore, doc } from "../node_modules/firebase/firestore/dist/firestore/index";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -39,8 +39,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestoreand get a reference to the service
 const db = getFirestore(app);
-
-import { doc } from "firebase/firestore"; 
 
 retrieveDocInfo();
 
