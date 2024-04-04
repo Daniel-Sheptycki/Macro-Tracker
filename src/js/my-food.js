@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "../../node_modules/firebase";
 
-import { deleteDoc, getFirestore } from "firebase/firestore";
+import { deleteDoc, getFirestore, doc, setDoc, getDocs, collection, getDoc } from "../../node_modules/firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -39,8 +39,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
-
-import { doc, setDoc, getDocs, collection, getDoc } from "firebase/firestore"; 
 
 let macroObjects = document.getElementsByClassName("macros-input-item-input");
 let newMealSelectOption = document.getElementById("choose-from-meals");

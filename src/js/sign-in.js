@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "../node_modules/firebase/app/dist/app/index";
+import { initializeApp } from "../../node_modules/firebase/app";
 
-import { getDoc, getFirestore } from "../node_modules/firebase/firestore/dist/firestore/index";
+import { getDoc, doc, getFirestore, setDoc } from "../../node_modules/firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -39,8 +39,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
-
-import { doc, setDoc } from "firebase/firestore"; 
 
 function SwitchInterface(field) {
     document.getElementById(field).style = "display: flex";

@@ -1,10 +1,10 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "../node_modules/firebase/app/dist/app/index";
+import { initializeApp } from "../../node_modules/firebase/app";
 
-import { collection, getDoc, getDocs, getFirestore, query, setDoc } from "../node_modules/firebase/firestore/dist/firestore/index";
+import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "../../node_modules/firebase/firestore"
 
-import Chart from 'chart.js/auto'
+import Chart from '../node_modules/chart.js/auto/auto"'
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -40,8 +40,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestoreand get a reference to the service
 const db = getFirestore(app);
-
-import { doc, orderBy } from "firebase/firestore"; 
 
 updateTodaysMacros();
 updateTodaysMacrosInputs();
