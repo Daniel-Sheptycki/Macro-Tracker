@@ -2,6 +2,8 @@
     display: none;
 }
 main > section {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
     margin: 0 auto 5rem;
     display: flex;
@@ -10,6 +12,8 @@ main > section {
     form {
         input, label, button {
             padding: 1em;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
         display: flex;
@@ -31,6 +35,8 @@ main > section {
     #other-options-container {
         input, label, button {
             padding: 0.5em;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
         display: flex;

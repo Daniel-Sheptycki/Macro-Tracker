@@ -117,6 +117,8 @@ form {
     }
     input, button, select {
         padding: 0.5rem 1rem;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
         width: fit-content;
     }
     button {
@@ -269,12 +271,16 @@ form {
         display: flex;
         flex-direction: column;
         select {
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
             margin: 0 auto;
         }
     }
     input, button, select {
         padding: 0.5rem 1rem;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
         width: fit-content;
     }
 }
@@ -312,6 +318,8 @@ form {
         flex-wrap: wrap;
         justify-content: center;
         > div {
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
     }

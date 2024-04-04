@@ -183,6 +183,8 @@ body > footer #footer-content-wrapper {
         justify-content: space-evenly;
         flex-direction: row;
         button {
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
         }
     }
