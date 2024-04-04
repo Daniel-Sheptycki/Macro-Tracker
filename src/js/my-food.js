@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "../../node_modules/firebase";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 
-import { deleteDoc, getFirestore, doc, setDoc, getDocs, collection, getDoc } from "../../node_modules/firebase/firestore";
+import { deleteDoc, getFirestore, doc, setDoc, getDocs, collection, getDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 

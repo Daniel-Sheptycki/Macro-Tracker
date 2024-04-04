@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "../../node_modules/firebase/app";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 
-import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "../../node_modules/firebase/firestore"
+import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
 import Chart from '../node_modules/chart.js/auto/auto"'
 
