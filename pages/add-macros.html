@@ -21,12 +21,16 @@
   <body onload="generalStartup('add-macros')">
     <header id="header">
       <div id="header-title">
-        <h1>MACRO TRACKER</h1>
-        <p>Your solution to food</p>
+        <a href="../index.html">
+          <h1>MACRO TRACKER</h1>
+          <p>Your solution to food</p>
+        </a>
       </div>
       <nav>
         <ul>
-          <li><a href="../index.html">Home</a></li>
+          <li>
+            <a href="community.html">Community</a>
+          </li>
           <li><a href="dashboard.html">Dashboard</a></li>
           <li><a href="sign-in.html" id="sign-in-link">Sign In</a></li>
         </ul>
@@ -54,18 +58,6 @@
             <div id="choose-from-meals-container">
               <p id="meal-added-text"></p>
               <label for="choose-from-meals"> Choose From My Meals </label>
-            </div>
-            <div id="choose-from-meals-info-container">
-              <i class="fa-solid fa-circle-info"></i>
-              <div id="choose-from-meals-info-text">
-                <h4><strong>Highly Recommended</strong></h4>
-                <p>
-                  Choosing from your own list of meals allows for easier and
-                  better use of <em>Macro Tracker</em>, aswell as it enabling
-                  our recipt system. So your able to better keep track of the
-                  meals you ate throughout the day.
-                </p>
-              </div>
             </div>
           </div>
           <select id="choose-from-meals" name="meals">
@@ -119,8 +111,8 @@
           </div>
         </div>
         <div id="new-meal-input-field">
-          <i class="fa-solid fa-circle-plus" id="new-meal-button"></i>
           <h3>Add as a new meal</h3>
+          <i class="fa-solid fa-circle-plus" id="new-meal-button"></i>
           <div id="new-meal-content">
             <div class="macros-input-item">
               <label for="input-meal-name">Meal Name</label>
@@ -129,6 +121,7 @@
                 placeholder="Pb&J, Pasta etc.."
                 id="input-meal-name"
                 class="macros-input-item-input"
+                required
               />
             </div>
             <div class="macros-input-item">
@@ -138,6 +131,7 @@
                 placeholder="Vegan, High Cals, etc.."
                 id="input-meal-notes"
                 class="macros-input-item-input"
+                required
               />
             </div>
           </div>
@@ -145,7 +139,7 @@
         <button type="button" id="add-macros-button">Add Macros</button>
       </form>
     </main>
-    <footer>
+    <!-- <footer>
       <div id="footer-content-wrapper">
         <header>
           <p>&copy; Daniel Sheptycki 2023</p>
@@ -158,7 +152,7 @@
           </ul>
         </nav>
       </div>
-    </footer>
+    </footer> -->
     <script type="module" src="../src/js/add-macros.js"></script>
   </body>
 </html>

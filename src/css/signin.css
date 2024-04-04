@@ -40,3 +40,8 @@ main > section {
         margin: 0 auto;
     }
 }
+@media screen and (min-height: 400px) {
+    main {
+        height: 90vh;
+    }
+}

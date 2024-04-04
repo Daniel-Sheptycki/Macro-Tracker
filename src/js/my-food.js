@@ -15,21 +15,22 @@ import { deleteDoc, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyBBfSN1Zx7tglGAw-XigBKzoUGU8UcjurE",
+  apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
 
-  authDomain: "testmacrotracker.firebaseapp.com",
+  authDomain: "macro-tracker-615bd.firebaseapp.com",
 
-  projectId: "testmacrotracker",
+  projectId: "macro-tracker-615bd",
 
-  storageBucket: "testmacrotracker.appspot.com",
+  storageBucket: "macro-tracker-615bd.appspot.com",
 
-  messagingSenderId: "232132413454",
+  messagingSenderId: "392337084618",
 
-  appId: "1:232132413454:web:e44c3d929f88221803d45f",
+  appId: "1:392337084618:web:71cebe7aae4f2940792433",
 
-  measurementId: "G-Q26S7EFCLW"
+  measurementId: "G-7M925H7FL6"
 
 };
+
 
 
 // Initialize Firebase
@@ -63,8 +64,15 @@ function addMacrosButtonClicked() {
         macroValues[i] = 0;
       }
     }
-    document.getElementById("input-macros-form").reset();
-      addNewMealToDb(window.findCookie("username"), macroValues);
+
+    let servingSize = [document.getElementById("serving-size-input").value,     
+    document.querySelector('input[name="serving-size"]:checked').value]
+    addNewMealToDb(window.findCookie("username"), macroValues, servingSize);
+      // If Public
+      if (document.getElementById("make-meal-public-checkbox").checked) {
+      addPublicMeal(macroValues);
+      }
+      document.getElementById("input-macros-form").reset();
   }
 function deleteMealButtonClicked() {
     let macroValues = [];
@@ -88,8 +96,9 @@ async function updateMacrosInputField(selectedMeal) {
     document.getElementById("input-proteins").value = docSnap.data().proteins;
     document.getElementById("input-meal-name").value = docSnap.data().mealName;
     document.getElementById("input-meal-notes").value = docSnap.data().notes;
+    document.getElementById("serving-size-input").value = docSnap.data().servingAmount;
 }
-async function addNewMealToDb(username, selectedMeal) {
+async function addNewMealToDb(username, selectedMeal, servingSize) {
     const docRef = doc(db, "users", username, "meals", selectedMeal[4]);
     const docSnap = await getDoc(docRef);
   
@@ -102,7 +111,9 @@ async function addNewMealToDb(username, selectedMeal) {
           carbs: selectedMeal[1],
           fats: selectedMeal[2],
           proteins: selectedMeal[3],
-          notes: selectedMeal[5]
+          notes: selectedMeal[5],
+          servingAmount: servingSize[0],
+          servingUnit: servingSize[1]
       })
       document.getElementById("meal-added-text").innerHTML = "Meal Added!"
       refreshUserMealsList();
@@ -135,4 +146,21 @@ async function refreshUserMealsList() {
             `<option value="${doc.data().mealName}" class="user-meal">${doc.data().mealName}</option>`
           )
         })
+}
+async function addPublicMeal(mealInfo) {
+  const docSnap = await getDoc(doc(db, "users", window.findCookie("username"), "public-meals", mealInfo[4]));
+  if (docSnap.exists()) {
+    alert("Meal Is Already Public");
+  } else {
+    await setDoc(doc(db, "users", window.findCookie("username"), "public-meals", mealInfo[4]), {
+      mealName: mealInfo[4],
+      mealNotes: mealInfo[5],
+      calories: mealInfo[0],
+      carbs: mealInfo[1],
+      fats: mealInfo[2],
+      proteins: mealInfo[3],
+      author: window.findCookie("username"),
+    }
+      )
+  }
 }

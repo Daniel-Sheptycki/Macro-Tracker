@@ -17,19 +17,19 @@ import Chart from 'chart.js/auto'
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyBBfSN1Zx7tglGAw-XigBKzoUGU8UcjurE",
+  apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
 
-  authDomain: "testmacrotracker.firebaseapp.com",
+  authDomain: "macro-tracker-615bd.firebaseapp.com",
 
-  projectId: "testmacrotracker",
+  projectId: "macro-tracker-615bd",
 
-  storageBucket: "testmacrotracker.appspot.com",
+  storageBucket: "macro-tracker-615bd.appspot.com",
 
-  messagingSenderId: "232132413454",
+  messagingSenderId: "392337084618",
 
-  appId: "1:232132413454:web:e44c3d929f88221803d45f",
+  appId: "1:392337084618:web:71cebe7aae4f2940792433",
 
-  measurementId: "G-Q26S7EFCLW"
+  measurementId: "G-7M925H7FL6"
 
 };
 
@@ -58,10 +58,10 @@ async function updateTodaysMacros() {
             date: window.getDate("day"),
         })
     }
-    document.getElementById("calories-table-data").innerHTML = String(macroSnap.data().calories);
-    document.getElementById("carbohydrates-table-data").innerHTML = String(macroSnap.data().carbs).concat("g");
-    document.getElementById("fats-table-data").innerHTML = String(macroSnap.data().fats).concat("g");
-    document.getElementById("proteins-table-data").innerHTML = String(macroSnap.data().proteins).concat("g");
+    document.getElementById("calories-table-data").innerHTML = String(Math.ceil(macroSnap.data().calories));
+    document.getElementById("carbohydrates-table-data").innerHTML = String(Math.ceil(macroSnap.data().carbs)).concat("g");
+    document.getElementById("fats-table-data").innerHTML = String(Math.ceil(macroSnap.data().fats)).concat("g");
+    document.getElementById("proteins-table-data").innerHTML = String(Math.ceil(macroSnap.data().proteins)).concat("g");
 }
 async function updateTodaysMacrosInputs() {
     //When creating the html
@@ -70,6 +70,7 @@ async function updateTodaysMacrosInputs() {
     const macroSnap = await getDocs(query(macroRef, orderBy("time", "desc")));
     let i = 0;
     macroSnap.forEach(recipt => {
+      let time = recipt.data().time;
         hiddenMacrosOpened[i] = false;
         document.getElementById("macro-inputs-field").insertAdjacentHTML(
             "beforeend",
@@ -78,7 +79,7 @@ async function updateTodaysMacrosInputs() {
             <td>
               <header>
                 <p id="meal-name-${i}">${recipt.data().mealName}</p>
-                <p id="time-${i}">${recipt.data().time}</p>
+                <p id="time-${i}">${time}</p>
                 <div id="expand-button-${i}">
                   <i
                     class="fa-solid fa-angle-up"
@@ -134,7 +135,9 @@ async function createMap(timeFilter) {
     let dataProteins = [];
     let graphType;
         if (timeFilter == "today") {
-            const macroSnap = await getDocs(collection(db, "users", window.findCookie("username"), "macro-inputs", window.getDate("day"), "recipts"));            updateGraphData(macroSnap);
+            const todaysMacroInputsRef = collection(db, "users", window.findCookie("username"), "macro-inputs", window.getDate("day"), "recipts");
+            const macroSnap = await getDocs(query(todaysMacroInputsRef, orderBy("time", "asc")));            
+            updateGraphData(macroSnap);
         } else if (timeFilter == "days") {
             const macroSnap = await getDocs(macroInputsRef);
             updateGraphData(macroSnap);
@@ -145,6 +148,7 @@ async function createMap(timeFilter) {
         let timeSort;
         if (timeFilter == "today") {
             timeSort = day.data().time;
+            console.log
             graphType = 'bar';
         } else if (timeFilter == "days") {
             timeSort = day.data().date;
@@ -180,7 +184,8 @@ async function createMap(timeFilter) {
             }
             
           ]
-        }
+        },
+
       }
     )
   }

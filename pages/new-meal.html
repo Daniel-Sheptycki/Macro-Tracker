@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Food - Macro Tracker</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>New Meal - Macro</title>
+        <link rel="stylesheet" href="../src/css/style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:wght@400;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../src/css/dashboard.css" />
+        <script src="../src/js/index.js"></script>
+      </head>
+      <body onload="generalStartup()" id="my-food">
+        <header id="header">
+          <div id="header-title">
+            <a href="../index.html">
+              <h1>MACRO TRACKER</h1>
+              <p>Your solution to food</p>
+            </a>
+          </div>
+          <nav>
+            <ul>
+              <li>
+                <a href="community.html">Community</a>
+              </li>
+              <li>
+                <a href="/pages/dashboard.html">Dashboard</a>
+              </li>
+              <li>
+                <a href="/pages/sign-in.html" id="sign-in-link">Sign In</a>
+              </li>
+            </ul>
+          </nav>
+          <h3>Dashboard</h3>
+          <nav>
+            <ul>
+              <li>
+                <a href="add-macros.html">Add Macros</a>
+              </li>
+              <li><a href="statistics.html">Statistics</a></li>
+              <li><a href="my-food.html">My Food</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main id="new-meal-main">
+          <header>
+            <h2>Create a New Meal</h2>
+            <p>New complex meal</p>
+          </header>
+          <section id="meal-field">
+            <header id="active-meal-info">
+              <p id="active-meal-calories">0 Calories</p>
+              <p id="active-meal-carbs">0 Carbs</p>
+              <p id="active-meal-fats">0 Fats</p>
+              <p id="active-meal-proteins">0 Proteins</p>
+            </header>
+            <form id="add-ingredient">
+              <div id="meal-input-items">
+                <div class="macros-input-item">
+                  <label for="input-calories">Calories</label>
+                  <input
+                    type="number"
+                    placeholder="Calories"
+                    id="input-calories"
+                    min="0"
+                    class="macros-input-item-input"
+                    required
+                  />
+                </div>
+                <div class="macros-input-item">
+                  <label for="input-carbs">Carbohydrates (g)</label>
+                  <input
+                    type="number"
+                    placeholder="Carbohydrates"
+                    id="input-carbs"
+                    min="0"
+                    class="macros-input-item-input"
+                    required
+                  />
+                </div>
+                <div class="macros-input-item">
+                  <label for="input-fats">Fats (g)</label>
+                  <input
+                    type="number"
+                    placeholder="Fats"
+                    id="input-fats"
+                    min="0"
+                    class="macros-input-item-input"
+                    required
+                  />
+                </div>
+                <div class="macros-input-item">
+                  <label for="input-proteins">Proteins (g)</label>
+                  <input
+                    type="number"
+                    placeholder="Proteins"
+                    id="input-proteins"
+                    min="0"
+                    class="macros-input-item-input"
+                    required
+                  />
+                </div>
+                <div class="macros-input-item">
+                  <label for="input-ingredient-name">Ingredient Name</label>
+                  <input
+                    type="text"
+                    placeholder="Seasoning, Noodles etc.."
+                    id="input-ingredient-name"
+                    class="macros-input-item-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="macros-input-item" id="serving-size">
+                <label>Serving Size</label>
+                <input
+                  type="number"
+                  id="input-serving-size"
+                  placeholder="Serving Size"
+                  required
+                />
+                <div id="measurment-input-field">
+                  <div id="grams-radio-field">
+                    <label for="grams">Grams (g)</label>
+                    <input
+                      type="radio"
+                      id="grams"
+                      name="serving-size"
+                      value="g"
+                      checked
+                    />
+                  </div>
+                  <div id="ml-radio-field">
+                    <label for="ml">Mililiteres (Ml)</label>
+                    <input
+                      type="radio"
+                      id="ml"
+                      name="serving-size"
+                      value="Ml"
+                    />
+                  </div>
+                </div>
+                <div id="item-radio-field">
+                  <label for="ml">Amount of Item</label>
+                  <input type="radio" id="item" name="serving-size" value="" />
+                </div>
+              </div>
+              <button id="add-ingredient-button" type="button">
+                Add Ingredient
+              </button>
+            </form>
+            <form id="meal-info">
+              <div class="macros-input-item">
+                <label for="input-meal-name">Meal Name</label>
+                <input
+                  type="text"
+                  placeholder="Pb&J, Pasta etc.."
+                  id="input-meal-name"
+                  class="macros-input-item-input"
+                  required
+                />
+              </div>
+              <div class="macros-input-item">
+                <label for="input-meal-notes">Meal Notes</label>
+                <input
+                  type="text"
+                  placeholder="Vegan, High Cals, etc.."
+                  id="input-meal-notes"
+                  class="macros-input-item-input"
+                  required
+                />
+              </div>
+            </form>
+            <button id="add-meal-button" type="button">Add Meal</button>
+          </section>
+        </main>
+        <script src="../src/js/new-meal.js" type="module"></script>
+      </body>
+    </html>
+  </body>
+</html>

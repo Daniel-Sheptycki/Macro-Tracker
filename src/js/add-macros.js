@@ -1,48 +1,34 @@
-// Import the functions you need from the SDKs you need
-
 import { initializeApp } from "firebase/app";
-
 import { collection, getDoc, getFirestore } from "firebase/firestore";
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { doc, setDoc, getDocs, addDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyBBfSN1Zx7tglGAw-XigBKzoUGU8UcjurE",
+  apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
 
-  authDomain: "testmacrotracker.firebaseapp.com",
+  authDomain: "macro-tracker-615bd.firebaseapp.com",
 
-  projectId: "testmacrotracker",
+  projectId: "macro-tracker-615bd",
 
-  storageBucket: "testmacrotracker.appspot.com",
+  storageBucket: "macro-tracker-615bd.appspot.com",
 
-  messagingSenderId: "232132413454",
+  messagingSenderId: "392337084618",
 
-  appId: "1:232132413454:web:e44c3d929f88221803d45f",
+  appId: "1:392337084618:web:71cebe7aae4f2940792433",
 
-  measurementId: "G-Q26S7EFCLW"
+  measurementId: "G-7M925H7FL6"
 
 };
 
 
-// Initialize Firebase
-
 const app = initializeApp(firebaseConfig);
-
-// Initialize Cloud Firestore and get a reference to the service
 
 const db = getFirestore(app);
 
-import { doc, setDoc, getDocs, addDoc } from "firebase/firestore"; 
 
 let newMealMenu = false;
+let servingSizeActive = false;
+let mealSelected = false;
 let macroObjects = document.getElementsByClassName("macros-input-item-input");
 let newMealSelectOption = document.getElementById("choose-from-meals");
 
@@ -55,20 +41,31 @@ document.getElementById("new-meal-button").addEventListener("click", () => {
     newMealButtonClicked();
 })
 document.getElementById("choose-from-meals").addEventListener("change", () => {
-  updateMacrosInputField(newMealSelectOption.value)
+  updateMacrosInputField(newMealSelectOption.value, "simple")
+  if (!servingSizeActive) {
+    addServingSizeField();
+    servingSizeActive = true;
+    mealSelected = true;
+  }
 });
-
 refreshUserMealsList();
-
 function newMealButtonClicked() {
   if (newMealMenu) {
     newMealMenu = false;
     document.getElementById("new-meal-content").style = "display: none";
     document.getElementById("new-meal-button").classList = "fa-solid fa-circle-plus";
+    if (servingSizeActive && !mealSelected) {
+      removeServingSizeField();
+    servingSizeActive = false;
+    }
   } else {
     newMealMenu = true;
     document.getElementById("new-meal-content").style = "display: flex";
     document.getElementById("new-meal-button").classList = "fa-solid fa-circle-minus";
+    if (!servingSizeActive) {
+      addServingSizeField();
+    servingSizeActive = true;
+    }
   }
 }
 function addMacrosButtonClicked() {
@@ -80,25 +77,37 @@ function addMacrosButtonClicked() {
       macroValues[i] = 0;
     }
   }
-  document.getElementById("add-macros-form").reset();
   addNewMacrosToDb(window.findCookie("username"), macroValues);
   addNewMacrosRecipt(window.findCookie("username"), macroValues);
   if (newMealMenu) {
-    addNewMealToDb(window.findCookie("username"), macroValues);
+    let servingSize = [document.getElementById("serving-size-input").value,     
+    document.querySelector('input[name="serving-size"]:checked').value]
+    addNewMealToDb(window.findCookie("username"), macroValues, servingSize);
   }
+  document.getElementById("add-macros-form").reset();
 }
-async function updateMacrosInputField(selectedMeal) {
+async function updateMacrosInputField(selectedMeal, type) {
     // Recieves the "name" of the meal doc (which makes this hella easy)
     const docRef = doc(db, "users", window.findCookie("username"), "meals", selectedMeal);
     const docSnap = await getDoc(docRef);
-    document.getElementById("input-calories").value = docSnap.data().calories;
-    document.getElementById("input-carbs").value = docSnap.data().carbs;
-    document.getElementById("input-fats").value = docSnap.data().fats;
-    document.getElementById("input-proteins").value = docSnap.data().proteins;
+    let multiplier = 1;
+    if (type == "servingSizeUpdate") {
+      //Change the multiplier by the difference of the previous serving size and the new one
+      //Find new serving size
+      multiplier = Number(document.getElementById("serving-size-input").value) / Number(docSnap.data().servingAmount);
+      
+    }
+    else {
+      document.getElementById("serving-size-input").value = docSnap.data().servingAmount;
+    }
+    document.getElementById("input-calories").value = docSnap.data().calories * multiplier;
+    document.getElementById("input-carbs").value = docSnap.data().carbs * multiplier;
+    document.getElementById("input-fats").value = docSnap.data().fats * multiplier;
+    document.getElementById("input-proteins").value = docSnap.data().proteins * multiplier;
     document.getElementById("input-meal-name").value = docSnap.data().mealName;
     document.getElementById("input-meal-notes").value = docSnap.data().notes;
 }
-async function addNewMealToDb(username, selectedMeal) {
+async function addNewMealToDb(username, selectedMeal, servingSize) {
     const docRef = doc(db, "users", username, "meals", selectedMeal[4]);
     const docSnap = await getDoc(docRef);
   
@@ -111,7 +120,9 @@ async function addNewMealToDb(username, selectedMeal) {
           carbs: selectedMeal[1],
           fats: selectedMeal[2],
           proteins: selectedMeal[3],
-          notes: selectedMeal[5]
+          notes: selectedMeal[5],
+          servingAmount: servingSize[0],
+          servingUnit: servingSize[1]
       })
       document.getElementById("meal-added-text").innerHTML = "Meal & Macros Added!"
       refreshUserMealsList();
@@ -168,4 +179,31 @@ async function addNewMacrosRecipt(username, selectedMeal) {
         time: window.getDate("minute")
     })
     }
+}
+function addServingSizeField() {
+  document.getElementById("macros-input-field").insertAdjacentHTML("beforeend", `          
+  <div class="macros-input-item" id="serving-size">
+  <label>Serving Size</label>
+  <input type="number" id="serving-size-input" placeholder="Serving Size" required />
+  <div id="measurment-input-field">
+    <div id="grams-radio-field">
+      <label for="grams">Grams (g)</label>
+      <input type="radio" id="grams" name="serving-size" value="g" checked/>
+    </div>
+    <div id="ml-radio-field">
+      <label for="ml">Mililiteres (Ml)</label>
+      <input type="radio" id="ml" name="serving-size" value="Ml"/>
+    </div>
+    <div id="item-radio-field">
+      <label for="ml">Amount of Item</label>
+      <input type="radio" id="item" name="serving-size" value="" />
+    </div>
+  </div>
+</div>`)
+document.getElementById("serving-size-input").addEventListener("change", () => {
+  updateMacrosInputField(newMealSelectOption.value, "servingSizeUpdate");
+})
+}
+function removeServingSizeField() {
+  document.getElementById("serving-size").remove();
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community - Macro Tracker</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <link rel="stylesheet" href="../src/css/community.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:wght@400;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/108b272961.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../src/js/index.js"></script>
+  </head>
+  <body onload="generalStartup()">
+    <header id="dashboard-header">
+      <div id="header-content-wrapper">
+        <div id="header-title">
+          <a href="../index.html">
+            <h1>MACRO TRACKER</h1>
+            <p>Your solution to food</p>
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="community.html">Community</a>
+            </li>
+            <li>
+              <a href="dashboard.html">Dashboard</a>
+            </li>
+            <li><a href="sign-in.html" id="sign-in-link">Sign In</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <header>
+        <h2>Community</h2>
+        <p>
+          View public meals from other users, and add them to your own food
+          library if you'd like
+        </p>
+      </header>
+      <div id="community-main-content-wrapper">
+        <section>
+          <header>
+            <h3>View All Meals</h3>
+          </header>
+          <div id="meal-slot"></div>
+        </section>
+        <section>
+          <header><h3>Search</h3></header>
+          <p>Coming Soon</p>
+        </section>
+      </div>
+      <!-- Have a section to display all public meals (a large container, with articles split apart.) 
+        Each meal(article) has the Name of the Food, the Notes, the Tags and the Author up top, 
+        In the middle is the macros, and on the button is a "Add to My Meals" Button -->
+      <!-- Also Include a search option, to filter through certain tags in the meals, and a checkbox 
+            to only highlight "my meals" -->
+    </main>
+    <script src="../src/js/community.js" type="module"></script>
+  </body>
+</html>

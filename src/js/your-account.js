@@ -15,21 +15,22 @@ import { getDoc, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyBBfSN1Zx7tglGAw-XigBKzoUGU8UcjurE",
+  apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
 
-  authDomain: "testmacrotracker.firebaseapp.com",
+  authDomain: "macro-tracker-615bd.firebaseapp.com",
 
-  projectId: "testmacrotracker",
+  projectId: "macro-tracker-615bd",
 
-  storageBucket: "testmacrotracker.appspot.com",
+  storageBucket: "macro-tracker-615bd.appspot.com",
 
-  messagingSenderId: "232132413454",
+  messagingSenderId: "392337084618",
 
-  appId: "1:232132413454:web:e44c3d929f88221803d45f",
+  appId: "1:392337084618:web:71cebe7aae4f2940792433",
 
-  measurementId: "G-Q26S7EFCLW"
+  measurementId: "G-7M925H7FL6"
 
 };
+
 
 
 // Initialize Firebase

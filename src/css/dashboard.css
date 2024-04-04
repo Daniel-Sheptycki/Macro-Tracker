@@ -54,7 +54,7 @@ body > main header {
             padding: 2rem;
             cursor: pointer;
             transition: transform 0.5s ease-out, border 0.5s ease-out;
-            border: 0.01px solid white;
+            border: 0.01px solid var(--off-white);
         }
         article:hover {
             transform: scale(110%);
@@ -98,15 +98,15 @@ form {
         margin: 0 auto;
         gap: 0.2rem;
     }
-    #choose-from-meals-info-container {
+    .info-container {
         position: relative;
         }
-        #choose-from-meals-info-container:hover {
-            #choose-from-meals-info-text {
+        .info-container:hover {
+            .info-text {
                 display: block;
             }
     }
-    #choose-from-meals-info-text {
+    .info-text {
         display: none;
         position: absolute;
         background-color: white;
@@ -154,8 +154,21 @@ form {
             cursor: pointer;
         }
     }
+    #serving-size {
+        > div {
+            align-items: center;
+        }
+            #measurment-input-field {
+                display: flex;
+                justify-content: center;
+                div {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+    }
 }
-#my-food {
+#new-meal {
     main > div {
         display: flex;
         justify-content: center;
@@ -186,8 +199,8 @@ form {
         width: 50%;
     }
     #buttons-container {
-        margin: 0 auto;
         display: flex;
+        margin: 0 auto;
         gap: 5rem;
     }
     #form-content-wrapper {
@@ -228,6 +241,7 @@ form {
             justify-content: space-between;
             padding: 0;
         }
+        box-shadow: 0 0 5px gray;
         overflow: scroll;
     }
     #top-row {
@@ -264,6 +278,45 @@ form {
         width: fit-content;
     }
 }
+#new-meal-main {
+    button {
+        width: 150px;
+        margin: 0 auto;
+    }
+    #meal-info {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+#meal-field {
+    display: flex;
+    flex-direction: column;
+    header {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    #add-ingredient {
+        flex-direction: column;
+        gap: 1rem;
+        display: flex;
+        align-items: center;
+        width: 75%;
+        padding: 2rem;
+        border: 0.05em solid black;
+        margin: 2rem auto;
+    }
+    #meal-input-items {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        > div {
+            width: fit-content;
+        }
+    }
+}
+}
 @media screen and (min-width: 750px) {
     body > header  {
         position: fixed;
@@ -289,9 +342,6 @@ form {
             }
         }
     }
-    body > main {
-        height: 95vh
-    }
     body > main, footer {
         margin-left: 200px;
     }
@@ -313,5 +363,13 @@ form {
             width: 30%;
         }
     }
-    
+    @media screen and (min-height: 500px) {
+        #dashboard-main {
+                height: 95vh;
+        }
+    }
+    footer {
+        position: relative;
+        bottom: 0;
+    }
 }
