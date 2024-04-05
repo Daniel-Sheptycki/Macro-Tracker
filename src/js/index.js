@@ -42,7 +42,12 @@ function getDate(returnItem) {
 function SignedIn() {
   try {
     document.getElementById("sign-in-link").innerHTML = "Your Account";
-    document.getElementById("sign-in-link").href = "./pages/your-account.html";
+    //If they're on the main page
+    if (window.location.href == "https://daniel-sheptycki.github.io/Macro-Tracker/index.html" || window.location.href == "https://daniel-sheptycki.github.io/Macro-Tracker/") {
+      document.getElementById("sign-in-link").href = "./pages/your-account.html";
+    } else {
+      document.getElementById("sign-in-link").href = "./your-account.html";
+    }
     document.getElementById("get-started-link").href = "./pages/your-account.html";
     document.getElementById("get-started-link").innerHTML = "Resume Tracking";
     document.getElementById("dashboard-link").style = "display: block";
