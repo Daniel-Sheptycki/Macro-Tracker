@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase
 
 import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
-import Chart from '../node_modules/chart.js/auto/auto"'
+// import Chart from '../node_modules/chart.js/auto/auto"'
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -122,72 +122,72 @@ async function updateTodaysMacrosInputs() {
     });
     //the expand button, add the event listener
 }
-let lineChart;
-createMap(document.getElementById("graph-macro-choice").value)
-async function createMap(timeFilter) {
-    const macroInputsRef = collection(db, "users", window.findCookie("username"), "macro-inputs");
-    let i = 0;
-    let dataCals = [];
-    let dataCarbs = [];
-    let dataFats = [];
-    let dataProteins = [];
-    let graphType;
-        if (timeFilter == "today") {
-            const todaysMacroInputsRef = collection(db, "users", window.findCookie("username"), "macro-inputs", window.getDate("day"), "recipts");
-            const macroSnap = await getDocs(query(todaysMacroInputsRef, orderBy("time", "asc")));            
-            updateGraphData(macroSnap);
-        } else if (timeFilter == "days") {
-            const macroSnap = await getDocs(macroInputsRef);
-            updateGraphData(macroSnap);
-        }
-    function updateGraphData(macroSnap) {
-     macroSnap.docs.forEach((day) => {
-        console.log(day.data().calories);
-        let timeSort;
-        if (timeFilter == "today") {
-            timeSort = day.data().time;
-            console.log
-            graphType = 'bar';
-        } else if (timeFilter == "days") {
-            timeSort = day.data().date;
-            graphType = 'line';
-        }
-            dataCals[i] = { year: timeSort, count: day.data().calories};
-            dataCarbs[i] = { year: timeSort, count: day.data().carbs};
-            dataFats[i] = { year: timeSort, count: day.data().fats};
-            dataProteins[i] = { year: timeSort, count: day.data().proteins};
-        i++;
-    })
-}
+// let lineChart;
+// createMap(document.getElementById("graph-macro-choice").value)
+// async function createMap(timeFilter) {
+//     const macroInputsRef = collection(db, "users", window.findCookie("username"), "macro-inputs");
+//     let i = 0;
+//     let dataCals = [];
+//     let dataCarbs = [];
+//     let dataFats = [];
+//     let dataProteins = [];
+//     let graphType;
+//         if (timeFilter == "today") {
+//             const todaysMacroInputsRef = collection(db, "users", window.findCookie("username"), "macro-inputs", window.getDate("day"), "recipts");
+//             const macroSnap = await getDocs(query(todaysMacroInputsRef, orderBy("time", "asc")));            
+//             updateGraphData(macroSnap);
+//         } else if (timeFilter == "days") {
+//             const macroSnap = await getDocs(macroInputsRef);
+//             updateGraphData(macroSnap);
+//         }
+//     function updateGraphData(macroSnap) {
+//      macroSnap.docs.forEach((day) => {
+//         console.log(day.data().calories);
+//         let timeSort;
+//         if (timeFilter == "today") {
+//             timeSort = day.data().time;
+//             console.log
+//             graphType = 'bar';
+//         } else if (timeFilter == "days") {
+//             timeSort = day.data().date;
+//             graphType = 'line';
+//         }
+//             dataCals[i] = { year: timeSort, count: day.data().calories};
+//             dataCarbs[i] = { year: timeSort, count: day.data().carbs};
+//             dataFats[i] = { year: timeSort, count: day.data().fats};
+//             dataProteins[i] = { year: timeSort, count: day.data().proteins};
+//         i++;
+//     })
+// }
   
-    lineChart = new Chart(
-      document.getElementById('all-time-macros-map'),
-      {
-        type: graphType,
-        data: {
-          labels: dataCals.map(row => row.year),
-          datasets: [
-            {
-              label: 'Calories',
-              data: dataCals.map(row => row.count)
-            }, {
-                label: 'Carbohydrates',
-                data: dataCarbs.map(row => row.count)
-            },  {
-                label: 'Fats',
-                data: dataFats.map(row => row.count)
-            },  {
-                label: 'Proteins',
-                data: dataProteins.map(row => row.count)
-            }
+//     lineChart = new Chart(
+//       document.getElementById('all-time-macros-map'),
+//       {
+//         type: graphType,
+//         data: {
+//           labels: dataCals.map(row => row.year),
+//           datasets: [
+//             {
+//               label: 'Calories',
+//               data: dataCals.map(row => row.count)
+//             }, {
+//                 label: 'Carbohydrates',
+//                 data: dataCarbs.map(row => row.count)
+//             },  {
+//                 label: 'Fats',
+//                 data: dataFats.map(row => row.count)
+//             },  {
+//                 label: 'Proteins',
+//                 data: dataProteins.map(row => row.count)
+//             }
             
-          ]
-        },
+//           ]
+//         },
 
-      }
-    )
-  }
-  document.getElementById("graph-macro-choice").addEventListener("change", () => {
-    createMap(document.getElementById("graph-macro-choice").value)
-        lineChart.destroy();
-})
+//       }
+//     )
+//   }
+//   document.getElementById("graph-macro-choice").addEventListener("change", () => {
+//     createMap(document.getElementById("graph-macro-choice").value)
+//         lineChart.destroy();
+// })
