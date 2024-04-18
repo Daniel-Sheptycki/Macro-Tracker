@@ -51,9 +51,10 @@ function SignedIn() {
     document.getElementById("get-started-link").href = "./pages/dashboard.html";
     document.getElementById("get-started-link").innerHTML = "Resume Tracking";
     document.getElementById("dashboard-link").style = "display: block";
-    document.getElementById("main-page-others-food-link").href = "#"
-    document.getElementById("main-page-food-link").href = "./pages/my-food.html"
-    document.getElementById("main-page-track-link").href = "./pages/statistics.html"
+    document.getElementById("main-page-others-food-link").href = "#";
+    document.getElementById("main-page-food-link").href = "./pages/my-food.html";
+    document.getElementById("main-page-track-link").href = "./pages/statistics.html";
+    document.getElementById("community-link").href = "./pages/community.html";
     document.getElementById("community-link").style = "display: block";
   }
   catch {
