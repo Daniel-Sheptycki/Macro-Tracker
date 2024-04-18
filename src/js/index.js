@@ -48,7 +48,7 @@ function SignedIn() {
     } else {
       document.getElementById("sign-in-link").href = "./your-account.html";
     }
-    document.getElementById("get-started-link").href = "./pages/your-account.html";
+    document.getElementById("get-started-link").href = "./pages/dashboard.html";
     document.getElementById("get-started-link").innerHTML = "Resume Tracking";
     document.getElementById("dashboard-link").style = "display: block";
     document.getElementById("main-page-others-food-link").href = "#"
