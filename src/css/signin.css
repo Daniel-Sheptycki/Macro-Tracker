@@ -1,6 +1,7 @@
 #create-account-field {
     display: none;
 }
+
 main > section {
     width: -webkit-fit-content;
     width: -moz-fit-content;
@@ -9,43 +10,54 @@ main > section {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    form {
-        input, label, button {
-            padding: 1em;
-            width: -webkit-fit-content;
-            width: -moz-fit-content;
-            width: fit-content;
-        }
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-        border-bottom: 0.05em solid gray;
-        .all-inputs-field-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .input-field-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    }
-    #other-options-container {
-        input, label, button {
-            padding: 0.5em;
-            width: -webkit-fit-content;
-            width: -moz-fit-content;
-            width: fit-content;
-        }
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        width: 100%;
-        margin: 0 auto;
-    }
 }
+
+main > section form input,
+main > section form label,
+main > section form button {
+    padding: 1em;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+main > section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 0.05em solid gray;
+}
+
+main > section form .all-inputs-field-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+main > section form .input-field-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main > section #other-options-container input,
+main > section #other-options-container label,
+main > section #other-options-container button {
+    padding: 0.5em;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+main > section #other-options-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+}
+
 @media screen and (min-height: 400px) {
     main {
         height: 90vh;
