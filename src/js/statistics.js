@@ -64,6 +64,7 @@ async function updateTodaysMacros() {
 async function updateTodaysMacrosInputs() {
     //When creating the html
     let username = window.findCookie("username");
+    console.log(window.getDate("day"));
     const macroRef = collection(db, "users", username, "macro-inputs", window.getDate("day"), "recipts");
     const macroSnap = await getDocs(query(macroRef, orderBy("time", "desc")));
     let i = 0;
@@ -110,7 +111,7 @@ async function updateTodaysMacrosInputs() {
             let extractedElement = Number(element.target.id.substring(12, element.target.id.length - 14));
             if (!hiddenMacrosOpened[extractedElement]) {
                 document.getElementById(`macro-input-${extractedElement}-expand-button`).classList = "fa-solid fa-angle-down";
-                document.getElementById(`hidden-macros-${extractedElement}`).style = "display: block";
+                document.getElementById(`hidden-macros-${extractedElement}`).style = "display: flex";
             } else {
                 document.getElementById(`hidden-macros-${extractedElement}`).style = "display: none";
                 document.getElementById(`macro-input-${extractedElement}-expand-button`).classList = "fa-solid fa-angle-up";

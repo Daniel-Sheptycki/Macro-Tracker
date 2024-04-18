@@ -24,7 +24,7 @@ function getDate(returnItem) {
   const date = new Date();
   let returnDate;
   if (returnItem == "day") {
-    returnDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() + 10}`;
+    returnDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() + 14}`;
   } else if (returnItem == "minute") {
     let minutes = date.getMinutes();
     let hours = date.getHours();
