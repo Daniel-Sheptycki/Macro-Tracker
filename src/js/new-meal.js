@@ -46,7 +46,10 @@ function addIngredient() {
     document.getElementById("add-ingredient").reset();
 
     function documentIngredientInputField(inputId) {
-        const inputValue = document.getElementById(`input-${inputId}`).value;
+        let inputValue = document.getElementById(`input-${inputId}`).value;
+        if (inputValue == "") {
+            inputValue = "0";
+        }
         currentIngredient[elementCount] = inputValue;
         if (elementCount < 4) {
             currentMeal[0][elementCount] += Number(inputValue);
@@ -87,7 +90,8 @@ async function addMeal() {
             proteins: element[3],
             servingSize: element[5]
         })
-        }
-        currentMeal = [[0, 0, 0, 0]];
-        document.getElementById("meal-info").reset();
     }
+    currentMeal = [[0, 0, 0, 0]];
+    document.getElementById("meal-info").reset();
+    window.location.assign("./my-food.html")
+}

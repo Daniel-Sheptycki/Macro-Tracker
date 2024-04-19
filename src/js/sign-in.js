@@ -40,6 +40,9 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+if (sessionStorage.getItem("create-account") == "true") {
+  SwitchInterface("create-account-field")
+}
 function SwitchInterface(field) {
     document.getElementById(field).style = "display: flex";
     if (field == "sign-in-field") {
