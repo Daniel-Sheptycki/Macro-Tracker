@@ -1,15 +1,19 @@
+let signedIn = false;
+
 // On Page Start Functions
 window.addEventListener("online", generalStartup());
 
 document.getElementById("get-started-link").addEventListener("click", () => {
-    sessionStorage.setItem("create-account", "true");
-    window.location.assign("./pages/sign-in.html")
+    if (signedIn != true) {
+        sessionStorage.setItem("create-account", "true");
+        window.location.assign("./pages/sign-in.html")
+    }
 })
 function generalStartup() {
   checkCookies();
 }
 function checkCookies() {
-  let signedIn = findCookie('signedin');
+  signedIn = findCookie('signedin');
   if (String(signedIn) == "true") {
     SignedIn();
   }
@@ -58,10 +62,6 @@ function SignedIn() {
     document.getElementById("main-page-others-food-link").href = "#";
     document.getElementById("main-page-food-link").href = "./pages/my-food.html";
     document.getElementById("main-page-track-link").href = "./pages/statistics.html";
-    document.getElementById("get-started-link").removeEventListener("click", () => {
-      sessionStorage.setItem("create-account", "true");
-      window.location.assign("./pages/sign-in.html")
-  })
     document.getElementById("community-link").href = "./pages/community.html";
     document.getElementById("main-page-others-food-link").href = "./pages/community.html";
     document.getElementById("community-link").style = "display: block";
