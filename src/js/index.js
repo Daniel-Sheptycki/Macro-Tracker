@@ -1,13 +1,9 @@
 // On Page Start Functions
 window.addEventListener("online", generalStartup());
 
-let signedIn = false;
-
 document.getElementById("get-started-link").addEventListener("click", () => {
-    if (signedIn != true) {
-        sessionStorage.setItem("create-account", "true");
-        window.location.assign("./pages/sign-in.html")
-    }
+    sessionStorage.setItem("create-account", "true");
+    window.location.assign("./pages/sign-in.html")
 })
 function generalStartup() {
   checkCookies();
@@ -48,7 +44,6 @@ function getDate(returnItem) {
 }
 // If Signed In
 function SignedIn() {
-  signedIn = true;
   try {
     document.getElementById("sign-in-link").innerHTML = "Your Account";
     //If they're on the main page
@@ -63,6 +58,10 @@ function SignedIn() {
     document.getElementById("main-page-others-food-link").href = "#";
     document.getElementById("main-page-food-link").href = "./pages/my-food.html";
     document.getElementById("main-page-track-link").href = "./pages/statistics.html";
+    document.getElementById("get-started-link").removeEventListener("click", () => {
+      sessionStorage.setItem("create-account", "true");
+      window.location.assign("./pages/sign-in.html")
+  })
     document.getElementById("community-link").href = "./pages/community.html";
     document.getElementById("main-page-others-food-link").href = "./pages/community.html";
     document.getElementById("community-link").style = "display: block";
