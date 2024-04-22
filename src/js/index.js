@@ -32,7 +32,7 @@ function getDate(returnItem) {
   const date = new Date();
   let returnDate;
   if (returnItem == "day") {
-    returnDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() + 14}`;
+    returnDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   } else if (returnItem == "minute") {
     let minutes = date.getMinutes();
     let hours = date.getHours();

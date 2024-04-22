@@ -12,9 +12,14 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../src/css/dashboard.css" />
+    <link rel="stylesheet" href="../src/css/my-food.css" />
+    <script
+      src="https://kit.fontawesome.com/108b272961.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="../src/js/index.js"></script>
   </head>
-  <body onload="generalStartup()" id="new-meal">
+  <body onload="generalStartup()">
     <header id="header">
       <div id="header-title">
         <a href="../index.html">
@@ -46,148 +51,105 @@
         </ul>
       </nav>
     </header>
-    <main id="main">
+    <main>
       <header>
         <h2>Your Food</h2>
-        <p>
+        <p id="header-desktop-info">
           <strong>Review Create</strong> and <strong>Edit</strong> your Meals.
         </p>
+        <div id="header-mobile-info">
+          <a href="#edit-and-view-meal">
+            <div id="edit-header-text">
+              <p><strong>View</strong> and <strong>Edit</strong> your Meals</p>
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+          </a>
+          <a href="#add-meal">
+            <div id="add-header-text">
+              <p>Add a <strong>New</strong> Meal</p>
+              <i class="fa-solid fa-plus"></i>
+            </div>
+          </a>
+        </div>
       </header>
       <div id="main-content-wrapper">
-        <section>
-          <header id="section-header-text">
-            <h3>Edit or Create a Meal</h3>
-            <a href="./new-meal.html">Add A Complex Meal</a>
-            <p id="meal-added-text"></p>
+        <section id="edit-and-view-meal">
+          <header>
+            <h3>View <span>or</span> Edit Meal</h3>
           </header>
-          <form id="input-macros-form">
-            <div id="form-content-wrapper">
-              <div id="meals-select-field">
-                <label for="choose-from-meals"> Choose From My Meals </label>
-                <select id="choose-from-meals" name="meals">
-                  <option value="">Browse Meals ..</option>
-                </select>
-              </div>
-              <div id="macros-input-field">
-                <div class="macros-input-item">
-                  <label for="input-calories">Calories</label>
-                  <input
-                    type="number"
-                    placeholder="Calories"
-                    id="input-calories"
-                    min="0"
-                    class="macros-input-item-input"
-                    required
-                  />
-                </div>
-                <div class="macros-input-item">
-                  <label for="input-carbs">Carbohydrates (g)</label>
-                  <input
-                    type="number"
-                    placeholder="Carbohydrates"
-                    id="input-carbs"
-                    min="0"
-                    class="macros-input-item-input"
-                    required
-                  />
-                </div>
-                <div class="macros-input-item">
-                  <label for="input-fats">Fats (g)</label>
-                  <input
-                    type="number"
-                    placeholder="Fats"
-                    id="input-fats"
-                    min="0"
-                    class="macros-input-item-input"
-                    required
-                  />
-                </div>
-                <div class="macros-input-item">
-                  <label for="input-proteins">Proteins (g)</label>
-                  <input
-                    type="number"
-                    placeholder="Proteins"
-                    id="input-proteins"
-                    min="0"
-                    class="macros-input-item-input"
-                    required
-                  />
-                </div>
-                <div class="macros-input-item">
-                  <label for="input-meal-name">Meal Name</label>
-                  <input
-                    type="text"
-                    placeholder="Pb&J, Pasta etc.."
-                    id="input-meal-name"
-                    class="macros-input-item-input"
-                  />
-                </div>
-                <div class="macros-input-item">
-                  <label for="input-meal-notes">Meal Notes</label>
-                  <input
-                    type="text"
-                    placeholder="Vegan, High Cals, etc.."
-                    id="input-meal-notes"
-                    class="macros-input-item-input"
-                  />
-                </div>
-                <div class="macros-input-item" id="serving-size">
-                  <label>Serving Size</label>
-                  <input
-                    type="number"
-                    id="serving-size-input"
-                    placeholder="Serving Size"
-                    required
-                  />
-                  <div id="measurment-input-field">
-                    <div id="grams-radio-field">
-                      <label for="grams">Grams (g)</label>
-                      <input
-                        type="radio"
-                        id="grams"
-                        name="serving-size"
-                        value="g"
-                        checked
-                      />
-                    </div>
-                    <div id="ml-radio-field">
-                      <label for="ml">Mililiteres (Ml)</label>
-                      <input
-                        type="radio"
-                        id="ml"
-                        name="serving-size"
-                        value="Ml"
-                      />
-                    </div>
-                    <div id="item-radio-field">
-                      <label for="ml">Amount of Item</label>
-                      <input
-                        type="radio"
-                        id="item"
-                        name="serving-size"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="buttons-container">
-                <div id="add-delete-buttons">
-                  <button type="button" id="delete-meal-button">
-                    Delete Meal
-                  </button>
-                  <button type="button" id="add-meal-button">Add Meal</button>
-                </div>
-                <div>
-                  <label for="make-meal-public-checkbox"
-                    >Make It a Public Meal</label
-                  >
-                  <input type="checkbox" id="make-meal-public-checkbox" />
-                </div>
-                <button type="reset">Reset</button>
+          <div class="main-content">
+            <div id="meal-main">
+              <select name="meals" id="select-meal-to-edit">
+                <option value="">Select A Meal</option>
+              </select>
+              <div id="meal-information-box">
+                <header>
+                  <p id="meal-info-name">Meal Name</p>
+                  <p id="meal-info-notes">Meal Notes</p>
+                </header>
+                <p id="meal-info-cals">Cals: 0</p>
+                <p id="meal-info-carbs">Carbs: 0</p>
+                <p id="meal-info-fats">Fats: 0</p>
+                <p id="meal-info-proteins">Proteins: 0</p>
               </div>
             </div>
-          </form>
+            <div id="ingredients-information-box">
+              <table id="ingredient-list">
+                <thead>
+                  <tr>
+                    <th>Ingredients:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="ingredient">
+                    <td>
+                      <div class="info-view">
+                        <div class="macros">
+                          <p>Cals: 0</p>
+                          <p>Carbs: 0</p>
+                          <p>Fats: 0</p>
+                          <p>Proteins: 0</p>
+                        </div>
+                        <div class="buttons">
+                          <button>Edit</button><button>Remove</button>
+                        </div>
+                      </div>
+                      <div class="info-edit">
+                        <div class="info-inputs">
+                          <div>
+                            <label for="serving-size">Serving Size</label>
+                            <input type="text" name="serving-size" />
+                          </div>
+                          <div>
+                            <label for="cals">Calories</label>
+                            <input type="text" name="cals" />
+                          </div>
+                          <div>
+                            <label for="carbs">Carbohydrates</label>
+                            <input type="text" name="carbs" />
+                          </div>
+                          <div>
+                            <label for="fats">Fats</label>
+                            <input type="text" name="fats" />
+                          </div>
+                          <div>
+                            <label for="proteins">Proteins</label>
+                            <input type="text" name="proteins" />
+                          </div>
+                        </div>
+                        <button>Done</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section id="add-meal">
+          <header>
+            <h3>Add Meal</h3>
+          </header>
         </section>
       </div>
     </main>

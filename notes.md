@@ -1,1 +1,0 @@
-okay, formatting serving size

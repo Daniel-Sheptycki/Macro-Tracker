@@ -1,0 +1,114 @@
+form {
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+form #form-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+form #meal-added-text {
+    color: green;
+    text-align: center;
+    margin: 0 auto;
+}
+
+form #meals-select-field {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+form #choose-from-meals-container {
+    display: flex;
+    margin: 0 auto;
+    gap: 0.2rem;
+}
+
+form .info-container {
+    position: relative;
+}
+
+form .info-container:hover .info-text {
+    display: block;
+}
+
+form .info-text {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid gray;
+    padding: 0.5em;
+    left: 50%;
+    box-shadow: 0 0 5px gray;
+}
+
+form input,
+form select {
+    padding: 0.5rem 1rem;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+form button {
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+form .macros-input-item {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+form #new-meal-content {
+    display: none;
+    margin-bottom: 2rem;
+    justify-content: center;
+    gap: 1rem;
+}
+
+form #macros-input-field {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+form #new-meal-input-field {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 0 1rem;
+}
+
+form #new-meal-input-field i {
+    font-size: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+form #serving-size > div {
+    align-items: center;
+}
+
+form #serving-size #measurment-input-field {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+form #form-content-wrapper #buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
