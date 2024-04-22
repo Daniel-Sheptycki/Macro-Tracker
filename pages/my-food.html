@@ -76,21 +76,23 @@
         <section id="edit-and-view-meal">
           <header>
             <h3>View <span>or</span> Edit Meal</h3>
+            <p id="status-text"></p>
           </header>
           <div class="main-content">
             <div id="meal-main">
               <select name="meals" id="select-meal-to-edit">
-                <option value="">Select A Meal</option>
+                <option value="undefined">Select A Meal</option>
               </select>
               <div id="meal-information-box">
                 <header>
-                  <p id="meal-info-name">Meal Name</p>
-                  <p id="meal-info-notes">Meal Notes</p>
+                  <p id="meal-info-name">Select A Meal To View Or Edit</p>
+                  <p id="meal-info-notes"></p>
                 </header>
-                <p id="meal-info-cals">Cals: 0</p>
-                <p id="meal-info-carbs">Carbs: 0</p>
-                <p id="meal-info-fats">Fats: 0</p>
-                <p id="meal-info-proteins">Proteins: 0</p>
+                <p id="meal-info-cals"></p>
+                <p id="meal-info-carbs"></p>
+                <p id="meal-info-fats"></p>
+                <p id="meal-info-proteins"></p>
+                <button id="delete-meal-button">Delete Meal</button>
               </div>
             </div>
             <div id="ingredients-information-box">
@@ -103,7 +105,7 @@
                 <tbody>
                   <tr class="ingredient">
                     <td>
-                      <div class="info-view">
+                      <div class="info-view" style="display: none">
                         <div class="macros">
                           <p>Cals: 0</p>
                           <p>Carbs: 0</p>
@@ -114,7 +116,7 @@
                           <button>Edit</button><button>Remove</button>
                         </div>
                       </div>
-                      <div class="info-edit">
+                      <div class="info-edit" style="display: none">
                         <div class="info-inputs">
                           <div>
                             <label for="serving-size">Serving Size</label>

@@ -2,7 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 
-import { getFirestore, doc, getDocs, collection, getDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+import { getFirestore, doc, getDocs, collection, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -40,19 +40,27 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-// let macroObjects = document.getElementsByClassName("macros-input-item-input");
 let newMealSelectOption = document.getElementById("select-meal-to-edit");
+
+//Will hold the meal that is currently being viewed/edited
+let selectedMeal = undefined;
+
 refreshUserMealsList();
 
 // document.getElementById("add-meal-button").addEventListener("click", () => {
 //     addMacrosButtonClicked();
 // })
 document.getElementById("select-meal-to-edit").addEventListener("change", () => {
-    updateMealInfo(newMealSelectOption.value);
+    selectedMeal = (newMealSelectOption.value);
+    if (selectedMeal == undefined || selectedMeal == "undefined") {
+      resetMealInfo();
+    } else {
+      updateMealInfo(selectedMeal);
+    }
   });
-// document.getElementById("delete-meal-button").addEventListener("click", () => {
-//     deleteMealButtonClicked();
-// })
+document.getElementById("delete-meal-button").addEventListener("click", () => {
+    deleteMealButtonClicked();
+})
 // function addMacrosButtonClicked() {
 //     let macroValues = [];
 //     // Assign inputs to variables
@@ -72,18 +80,21 @@ document.getElementById("select-meal-to-edit").addEventListener("change", () => 
 //       }
 //       document.getElementById("input-macros-form").reset();
 //   }
-// function deleteMealButtonClicked() {
-//     let macroValues = [];
-//     // Assign inputs to variables
-//     for (let i = 0; i < macroObjects.length; i++) {
-//       macroValues[i] = macroObjects[i].value
-//       if (macroValues[i] < 0) {
-//         macroValues[i] = 0;
-//       }
-//     }
-//     document.getElementById("input-macros-form").reset();
-//       deleteMealFromDb(window.findCookie("username"), macroValues);
-// }
+function deleteMealButtonClicked() {
+    if (confirm(`Are you sure you want to delete meal '${selectedMeal}'?`)) {
+      deleteMealFromDb(window.findCookie("username"));
+    }
+}
+function resetMealInfo() {
+  document.getElementById("meal-info-cals").innerHTML = "";
+  document.getElementById("meal-info-carbs").innerHTML = "";
+  document.getElementById("meal-info-fats").innerHTML = "";
+  document.getElementById("meal-info-proteins").innerHTML = "";
+  document.getElementById("meal-info-name").innerHTML = "Select A Meal To View Or Edit";
+  document.getElementById("meal-info-notes").innerHTML = "";
+  document.getElementById("delete-meal-button").style = "display: none";
+  document.querySelector("#ingredient-list tbody").innerHTML = "";
+}
 async function updateMealInfo(selectedMeal) {
     // Recieves the "name" of the meal doc (which makes this hella easy)
     const docRef = doc(db, "users", window.findCookie("username"), "meals", selectedMeal);
@@ -94,6 +105,7 @@ async function updateMealInfo(selectedMeal) {
     document.getElementById("meal-info-proteins").innerHTML = "Proteins:"+docSnap.data().proteins;
     document.getElementById("meal-info-name").innerHTML = docSnap.data().mealName;
     document.getElementById("meal-info-notes").innerHTML = docSnap.data().notes;
+    document.getElementById("delete-meal-button").style = "display: inline";
     getIngredients(selectedMeal);
 }
 async function getIngredients(selectedMeal) {
@@ -109,7 +121,7 @@ async function getIngredients(selectedMeal) {
           <p>${ingredient.servingSize} ${ingredient.mealName}:</p>
           <i class="fa-solid fa-angle-up"></i>
         </header>
-        <div class="info-view">
+        <div class="info-view" style="display: none">
           <div class="macros">
             <p>Cals: ${ingredient.calories}</p>
             <p>Carbs: ${ingredient.carbs}</p>
@@ -117,10 +129,10 @@ async function getIngredients(selectedMeal) {
             <p>Proteins: ${ingredient.proteins}</p>
           </div>
           <div class="buttons">
-            <button>Edit</button><button>Remove</button>
+            <button id="edit-${iterator}">Edit</button><button id="remove-${iterator}">Remove</button>
           </div>
         </div>
-        <div class="info-edit">
+        <div class="info-edit" style="display: none">
           <div class="info-inputs">
             <div>
               <label for="serving-size">Serving Size</label>
@@ -143,25 +155,41 @@ async function getIngredients(selectedMeal) {
               <input type="text" name="proteins" placeholder="${ingredient.proteins}"/>
             </div>
           </div>
-          <button>Done</button>
+          <button id="done-${iterator}">Done</button>
         </div>
       </td>
     </tr>`)
     document.querySelector(`#ingredient-${iterator}`).addEventListener("click", (element) => {
       element = element.target;
       let id = element.id.split("-")[1];
-      while (id == undefined || id == "") {
-        id = element.parentNode.id.split("-")[1];
-        element = element.parentNode;
-      }
-      if (document.querySelector(`#ingredient-${id} header i`).classList == "fa-solid fa-angle-up") {
-        //Menu not expanded
-        document.querySelector(`#ingredient-${id} header i`).classList = "fa-solid fa-angle-down";
-        document.querySelector(`#ingredient-${id} .info-view`).style = "display: block";
-      } else {
-        //Menu expanded
-        document.querySelector(`#ingredient-${id} header i`).classList = "fa-solid fa-angle-up";
+      //If they clicked the ediit button
+      if (element.id == `edit-${id}`) {
         document.querySelector(`#ingredient-${id} .info-view`).style = "display: none";
+        document.querySelector(`#ingredient-${id} .info-edit`).style = "display: block";
+      } else if (element.id == `remove-${id}`) {//If they clicked the delete button
+        //do deleting of ingredients and re-calculating of meals macros here
+      } else if (element.id == `done-${id}`) { //If they clicked "done" under the edit menu
+        //do editing things here
+        document.querySelector(`#ingredient-${id} .info-view`).style = "display: block";
+        document.querySelector(`#ingredient-${id} .info-edit`).style = "display: none";
+      } else {
+        while (id == undefined || id == "") {
+          id = element.parentNode.id.split("-")[1];
+          element = element.parentNode;
+        }
+        if (document.querySelector(`#ingredient-${id} .info-view`).style.display == "none") {
+          //Menu not expanded
+          if (document.querySelector(`#ingredient-${id} .info-edit`).style.display == "none") {
+            document.querySelector(`#ingredient-${id} header i`).classList = "fa-solid fa-angle-down";
+            document.querySelector(`#ingredient-${id} .info-view`).style = "display: block";
+          }
+        } else {
+          console.log(document.querySelector(`#ingredient-${id} .info-view`).style.display);
+          //Menu expanded
+          document.querySelector(`#ingredient-${id} header i`).classList = "fa-solid fa-angle-up";
+          document.querySelector(`#ingredient-${id} .info-view`).style = "display: none";
+          document.querySelector(`#ingredient-${id} .info-edit`).style = "display: none";
+        } 
       }
     })
     iterator++;
@@ -191,19 +219,20 @@ async function getIngredients(selectedMeal) {
 //       refreshUserMealsList();
 //     }
 //   }
-// async function deleteMealFromDb(username, selectedMeal) {
-//     const docRef = doc(db, "users", username, "meals", selectedMeal[4]);
-//     const docSnap = await getDoc(docRef);
+async function deleteMealFromDb(username) {
+    const docRef = doc(db, "users", username, "meals", selectedMeal);
+    const docSnap = await getDoc(docRef);
 
-//     if (docSnap.exists()) {
-//         await deleteDoc(docRef);
-//         document.getElementById("meal-added-text").innerHTML = "Meal Deleted!"
-//         document.getElementById("meal-added-text").style = "color: red;"
-//         refreshUserMealsList();
-//     } else {
-//         alert("Meal Dosent Exist");
-//       }
-//     }
+    if (docSnap.exists()) {
+        await deleteDoc(docRef);
+        refreshUserMealsList();
+        document.querySelector("#status-text").innerHTML = "Meal Deleted!";
+        document.querySelector("#status-text").style = "color: red";
+        newMealSelectOption.dispatchEvent(new Event("change"));
+    } else {
+        alert("Meal Dosent Exist");
+      }
+    }
 async function refreshUserMealsList() {
     const snapshot = await getDocs(collection(db, "users", window.findCookie("username"), "meals"));
     snapshot.docs.forEach((doc) => {

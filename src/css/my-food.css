@@ -35,6 +35,9 @@ main > header h2 {
     flex-direction: column;
 }
 /* View or Edit Meal */
+#delete-meal-button {
+    display: none;
+}
 .main-content {
     display: flex;
     flex-direction: column;
