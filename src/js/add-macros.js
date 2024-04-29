@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { collection, getDoc, getFirestore, doc, setDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
-import { addMeal, username, verifyValue } from "./firebase";
+import { addMeal, username, verifyValue } from "./firebase.js";
 const firebaseConfig = {
 
   apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",

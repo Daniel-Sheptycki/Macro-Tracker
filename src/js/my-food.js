@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase
 
 import { getFirestore, doc, getDocs, collection, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
-import { addMeal } from "./firebase";
+import { addMeal } from "./firebase.js";
 
 const firebaseConfig = {
 
