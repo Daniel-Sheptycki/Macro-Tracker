@@ -276,12 +276,12 @@ document.getElementById("lone-meal-option").addEventListener("change", function 
         ingredientMenu.style.display = "none";
     }
 });
-document.getElementById("ingredient-meal-option").addEventListener("change", function () {
-    if (this.checked) {
-        mealMenu.style.display = "none";
-        ingredientMenu.style.display = "block";
-    }
-});
+// document.getElementById("ingredient-meal-option").addEventListener("change", function () {
+//     if (this.checked) {
+//         mealMenu.style.display = "none";
+//         ingredientMenu.style.display = "block";
+//     }
+// });
 document.getElementById("add-ingredient-menu-button").addEventListener("click", () => {
   document.getElementById("meal-to-be-added-info").style.display = "none";
   document.getElementById("add-ingredient-menu").style.display = "flex";
