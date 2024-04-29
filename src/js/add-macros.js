@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { collection, getDoc, getFirestore, doc, setDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
-
+import { addMeal, username, verifyValue } from "./firebase";
 const firebaseConfig = {
 
   apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
@@ -28,7 +28,6 @@ const db = getFirestore(app);
 let newMealMenu = false;
 let servingSizeActive = false;
 let mealSelected = false;
-let macroObjects = document.getElementsByClassName("macros-input-item-input");
 let newMealSelectOption = document.getElementById("choose-from-meals");
 
 // Normal JS (so to speak)
@@ -68,21 +67,27 @@ function newMealButtonClicked() {
   }
 }
 function addMacrosButtonClicked() {
-  let macroValues = [];
-  // Assign inputs to variables
-  for (let i = 0; i < macroObjects.length; i++) {
-    macroValues[i] = macroObjects[i].value
-    if (macroValues[i] < 0) {
-      macroValues[i] = 0;
-    }
+  // Get Inputs
+  const inputs = {
+    calories: verifyValue(document.getElementById("input-calories").value),
+    carbs: verifyValue(document.getElementById("input-carbs").value),
+    fats: verifyValue(document.getElementById("input-fats").value),
+    proteins: verifyValue(document.getElementById("input-proteins").value),
+    name: document.getElementById("input-meal-name").value,
+    notes: document.getElementById("input-meal-notes").value,
   }
-  addNewMacrosToDb(window.findCookie("username"), macroValues);
-  addNewMacrosRecipt(window.findCookie("username"), macroValues);
-  if (newMealMenu) {
-    let servingSize = [document.getElementById("serving-size-input").value,     
-    document.querySelector('input[name="serving-size"]:checked').value]
-    addNewMealToDb(window.findCookie("username"), macroValues, servingSize);
-  }
+  Object.assign(inputs, {ingredients: [{    
+    name: "Meal",
+    calories: verifyValue(inputs.calories),
+    carbs: verifyValue(inputs.carbs),
+    fats: verifyValue(inputs.fats),
+    proteins: verifyValue(inputs.proteins),
+    size: 1,
+    unit: "amount-of-item",}]
+  });
+  addNewMacrosToDb(inputs);
+  addNewMacrosRecipt(inputs);
+  if (newMealMenu) addMeal(inputs);
   document.getElementById("add-macros-form").reset();
 }
 async function updateMacrosInputField(selectedMeal, type) {
@@ -106,50 +111,30 @@ async function updateMacrosInputField(selectedMeal, type) {
     document.getElementById("input-meal-name").value = docSnap.data().mealName;
     document.getElementById("input-meal-notes").value = docSnap.data().notes;
 }
-async function addNewMealToDb(username, selectedMeal, servingSize) {
-    const docRef = doc(db, "users", username, "meals", selectedMeal[4]);
-    const docSnap = await getDoc(docRef);
-  
-    if (docSnap.exists()) {
-        alert("Meal Already Exists!");
-    } else {
-      await setDoc(docRef, {
-          mealName: selectedMeal[4],
-          calories: selectedMeal[0],
-          carbs: selectedMeal[1],
-          fats: selectedMeal[2],
-          proteins: selectedMeal[3],
-          notes: selectedMeal[5],
-          servingAmount: servingSize[0],
-          servingUnit: servingSize[1]
-      })
-      document.getElementById("meal-added-text").innerHTML = "Meal & Macros Added!"
-      refreshUserMealsList();
-    }
-  }
-async function addNewMacrosToDb(username, selectedMeal) {
+async function addNewMacrosToDb(info) {
     const docRef = doc(db, "users", username, "macro-inputs", String(window.getDate("day")));
     const docSnap = await getDoc(docRef);
-    while (!docSnap.exists()) {
+    //If they havent inputted any macros today set today's values to what they just inputted
+    if (!docSnap.exists()) {
       await setDoc(doc(db, "users", username, "macro-inputs", window.getDate("day")), {
-          calories: 0,
-          carbs: 0,
-          fats: 0,
-          proteins: 0,
+          calories: Number(info.calories),
+          carbs: Number(info.carbs),
+          fats: Number(info.fats),
+          proteins: Number(info.proteins),
           date: window.getDate("day"),
       })
-  }
-    let newCals = Number(docSnap.data().calories) + Number(selectedMeal[0]);
-    let newCarbs = Number(docSnap.data().carbs) + Number(selectedMeal[1]);
-    let newFats = Number(docSnap.data().fats) + Number(selectedMeal[2]);
-    let newProteins = Number(docSnap.data().proteins) + Number(selectedMeal[3]);
-          await setDoc(docRef, {
-              calories: newCals,
-              carbs: newCarbs,
-              fats: newFats,
-              proteins: newProteins,
-              date: window.getDate("day"),
-          })
+    }
+    //Otherwise add today's macros with what they inputted, and set that to the new value. 
+    else 
+    {
+      await setDoc(docRef, {
+        calories: Number(docSnap.data().proteins) + Number(info.proteins),
+        carbs: Number(docSnap.data().fats) + Number(info.fats),
+        fats: Number(docSnap.data().carbs) + Number(info.carbs),
+        proteins: Number(docSnap.data().calories) + Number(info.calories),
+        date: window.getDate("day"),
+    })
+    }
     document.getElementById("meal-added-text").innerHTML = "Macros Added!"
 }
 async function refreshUserMealsList() {
@@ -159,22 +144,22 @@ async function refreshUserMealsList() {
     console.log(displayedMeals[0])
     displayedMeals[0].remove();
   }
-    const snapshot = await getDocs(collection(db, "users", window.findCookie("username"), "meals"));
-    snapshot.docs.forEach((doc) => {
-        newMealSelectOption.insertAdjacentHTML(
-            "beforeend",
-            `<option value="${doc.data().mealName}" class="user-meal">${doc.data().mealName}</option>`
-          )
-        })
+  const snapshot = await getDocs(collection(db, "users", window.findCookie("username"), "meals"));
+  snapshot.docs.forEach((doc) => {
+    newMealSelectOption.insertAdjacentHTML(
+        "beforeend",
+          `<option value="${doc.data().mealName}" class="user-meal">${doc.data().mealName}</option>`
+        )
+    })
 }
-async function addNewMacrosRecipt(username, selectedMeal) {
-    if (selectedMeal[4] != null) {
+async function addNewMacrosRecipt(info) {
+    if (info.name != null) {
     await addDoc(collection(db, "users", username, "macro-inputs", String(window.getDate("day")), "recipts"), {
-        mealName: selectedMeal[4],
-        calories: selectedMeal[0],
-        carbs: selectedMeal[1],
-        fats: selectedMeal[2],
-        proteins: selectedMeal[3],
+        mealName: info.name,
+        calories: info.calories,
+        carbs: info.carbs,
+        fats: info.fats,
+        proteins: info.proteins,
         time: window.getDate("minute")
     })
     }

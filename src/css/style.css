@@ -24,6 +24,7 @@ button {
     padding: 1em 1.5em;
     background-color: var(--main-bg-color);
     border: 0.05em solid var(--secondary-detail-color);
+    cursor: pointer;
     color: var(--off-white);
     transition: background-color 0.3s linear, color 0.3s linear;
 }

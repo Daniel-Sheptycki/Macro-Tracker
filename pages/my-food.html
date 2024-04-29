@@ -76,7 +76,7 @@
         <section id="edit-and-view-meal">
           <header>
             <h3>View <span>or</span> Edit Meal</h3>
-            <p id="status-text"></p>
+            <p class="status-text"></p>
           </header>
           <div class="main-content">
             <div id="meal-main">
@@ -151,7 +151,200 @@
         <section id="add-meal">
           <header>
             <h3>Add Meal</h3>
+            <p class="status-text" style="color: green"></p>
           </header>
+          <form id="add-meal-forum">
+            <header>
+              <h3>Add By</h3>
+              <div class="radio-option">
+                <label for="lone-meal-option">Meal</label>
+                <input
+                  type="radio"
+                  name="add-by"
+                  id="lone-meal-option"
+                  checked="true"
+                />
+              </div>
+              <!-- <div class="radio-option">
+                <label for="ingredient-meal-option">Ingredients</label>
+                <input
+                  type="radio"
+                  name="add-by"
+                  id="ingredient-meal-option"
+                  checked="false"
+                />
+              </div> -->
+            </header>
+            <div id="add-by-meal-inputs" class="add-meal-section">
+              <div class="inputs-wrapper">
+                <div class="input-subdiv">
+                  <label for="meal-name-input">Meal Name</label
+                  ><input type="text" placeholder="Name" id="meal-name-input" />
+                </div>
+                <div class="input-subdiv">
+                  <label for="meal-notes-input">Notes</label
+                  ><input
+                    type="text"
+                    placeholder="Notes"
+                    id="meal-notes-input"
+                  />
+                </div>
+                <div class="input-subdiv">
+                  <label for="meal-calories-input">Calories</label
+                  ><input
+                    type="number"
+                    placeholder="Calories"
+                    id="meal-calories-input"
+                  />
+                </div>
+                <div class="input-subdiv">
+                  <label for="meal-carbs-input">Carbohydrates</label
+                  ><input
+                    type="number"
+                    placeholder="Carbohydrates"
+                    id="meal-carbs-input"
+                  />
+                </div>
+                <div class="input-subdiv">
+                  <label for="meal-fats-input">Fats</label
+                  ><input
+                    type="number"
+                    placeholder="Fats"
+                    id="meal-fats-input"
+                  />
+                </div>
+                <div class="input-subdiv">
+                  <label for="meal-protein-input">Proteins</label
+                  ><input
+                    type="number"
+                    placeholder="Proteins"
+                    id="meal-protein-input"
+                  />
+                </div>
+              </div>
+              <button id="add-meal-button" type="button">Add Meal</button>
+            </div>
+            <div id="add-by-ingredient-inputs" class="add-meal-section">
+              <div id="meal-to-be-added-info">
+                <header>
+                  <h4>Meal to be added:</h4>
+                  <p>Calories: 0</p>
+                  <p>Carbs: 0</p>
+                  <p>Fats: 0</p>
+                  <p>Proteins: 0</p>
+                </header>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ingredients</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>Ingredient 1</p>
+                        <i class="fa-solid fa-x"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Ingredient 2</p>
+                        <i class="fa-solid fa-x"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>Ingredient 3</p>
+                        <i class="fa-solid fa-x"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="buttons">
+                  <button id="add-ingredient-menu-button" type="button">
+                    Add Ingredient
+                  </button>
+                  <button id="add-meal-ingredient-button" type="button">
+                    Add Meal
+                  </button>
+                </div>
+              </div>
+              <div id="add-ingredient-menu">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+                <div class="inputs-wrapper">
+                  <div class="input-subdiv">
+                    <label for="ingredient-select">
+                      Select From Common Ingredients
+                    </label>
+                    <select id="select-from-cmn-ingredients">
+                      <option value="undefined">
+                        Select A Common Ingredient
+                      </option>
+                    </select>
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-name-input">Ingredient Name</label>
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      id="ingredient-name-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-notes-input">Serving Size</label>
+                    <input
+                      type="number"
+                      placeholder="Size"
+                      id="ingredient-size-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-unit-input">Serving Unit</label>
+                    <input
+                      type="text"
+                      placeholder="Unit"
+                      id="ingredient-unit-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-calories-input">Calories</label>
+                    <input
+                      type="number"
+                      placeholder="Calories"
+                      id="ingredient-calories-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-carbs-input">Carbohydrates</label>
+                    <input
+                      type="number"
+                      placeholder="Carbohydrates"
+                      id="ingredient-carbs-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-fats-input">Fats</label>
+                    <input
+                      type="number"
+                      placeholder="Fats"
+                      id="ingredient-fats-input"
+                    />
+                  </div>
+                  <div class="input-subdiv">
+                    <label for="ingredient-protein-input">Proteins</label>
+                    <input
+                      type="number"
+                      placeholder="Proteins"
+                      id="ingredient-protein-input"
+                    />
+                  </div>
+                </div>
+                <button id="add-ingredient-button" type="button">
+                  Add Ingredient
+                </button>
+              </div>
+            </div>
+          </form>
         </section>
       </div>
     </main>
