@@ -250,6 +250,13 @@ main > header h2 {
     flex-direction: column;
     align-items: center;
 }
+select optgroup {
+    font-style: normal;
+    border-bottom: 1px solid gray;
+}
+select option, select optgroup {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
 @media screen and (max-width: 550px) {
     #add-by-ingredients .add-meal-section {
