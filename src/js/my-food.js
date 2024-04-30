@@ -61,6 +61,42 @@ const commonIngredients = [
       servingUnit: "g"
   },
   {
+      name: "White Bread",
+      calories: 79,
+      carbs: 14,
+      fats: 1,
+      proteins: 2.7,
+      servingSize: 25, // Average weight of one slice of white bread in grams
+      servingUnit: "g"
+  },
+  {
+      name: "Multigrain Bread",
+      calories: 71,
+      carbs: 13,
+      fats: 1.1,
+      proteins: 3.1,
+      servingSize: 30, // Average weight of one slice of multigrain bread in grams
+      servingUnit: "g"
+  },
+  {
+      name: "Sourdough Bread",
+      calories: 80,
+      carbs: 15,
+      fats: 0.7,
+      proteins: 3,
+      servingSize: 28, // Average weight of one slice of sourdough bread in grams
+      servingUnit: "g"
+  },
+  {
+      name: "Rye Bread",
+      calories: 83,
+      carbs: 15,
+      fats: 1,
+      proteins: 2.7,
+      servingSize: 32, // Average weight of one slice of rye bread in grams
+      servingUnit: "g"
+  },
+  {
       name: "Egg",
       calories: 72,
       carbs: 0.4,
@@ -97,13 +133,49 @@ const commonIngredients = [
       servingUnit: "amount-of-item"
   },
   {
-      name: "Rice (White)",
+      name: "White Rice (Long Grain)",
       calories: 205,
       carbs: 45,
       fats: 0.4,
       proteins: 4.3,
-      servingSize: 1,
-      servingUnit: "amount-of-item"
+      servingSize: 158, // 1 cup cooked white rice (long grain) is approximately 158 grams
+      servingUnit: "g"
+  },
+  {
+      name: "Brown Rice",
+      calories: 216,
+      carbs: 45,
+      fats: 1.8,
+      proteins: 5,
+      servingSize: 195, // 1 cup cooked brown rice is approximately 195 grams
+      servingUnit: "g"
+  },
+  {
+      name: "Basmati Rice",
+      calories: 191,
+      carbs: 39,
+      fats: 0.4,
+      proteins: 4.1,
+      servingSize: 158, // 1 cup cooked basmati rice is approximately 158 grams
+      servingUnit: "g"
+  },
+  {
+      name: "Jasmine Rice",
+      calories: 205,
+      carbs: 45,
+      fats: 0.4,
+      proteins: 4.3,
+      servingSize: 158, // 1 cup cooked jasmine rice is approximately 158 grams
+      servingUnit: "g"
+  },
+  {
+      name: "Wild Rice",
+      calories: 166,
+      carbs: 35,
+      fats: 0.6,
+      proteins: 6.5,
+      servingSize: 164, // 1 cup cooked wild rice is approximately 164 grams
+      servingUnit: "g"
   },
   {
       name: "Potato",
