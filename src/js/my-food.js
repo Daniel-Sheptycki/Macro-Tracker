@@ -527,12 +527,16 @@ async function getIngredients(selectedMeal) {
     let iterator = 0;
     ingredients.forEach(ingredient => {
       console.log("iterated: "+iterator)
+      let unit = "";
+      if (ingredient.unit != "amount-of-item") {
+        unit = ingredient.unit
+      }
       ingredient = ingredient.data();
       document.querySelector("#ingredient-list tbody").insertAdjacentHTML("beforeend", `
     <tr class="ingredient">
       <td id="ingredient-${iterator}">
         <header>
-          <p>${ingredient.size}${ingredient.unit} ${ingredient.ingredientName}:</p>
+          <p>${ingredient.size}${unit} ${ingredient.ingredientName}:</p>
           <i class="fa-solid fa-angle-up"></i>
         </header>
         <div class="info-view" style="display: none">
