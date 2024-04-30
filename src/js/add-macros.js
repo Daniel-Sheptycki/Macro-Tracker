@@ -128,10 +128,10 @@ async function addNewMacrosToDb(info) {
     else 
     {
       await setDoc(docRef, {
-        calories: Number(docSnap.data().proteins) + Number(info.proteins),
-        carbs: Number(docSnap.data().fats) + Number(info.fats),
-        fats: Number(docSnap.data().carbs) + Number(info.carbs),
-        proteins: Number(docSnap.data().calories) + Number(info.calories),
+        calories: Number(docSnap.data().calories) + Number(info.calories),
+        carbs: Number(docSnap.data().carbs) + Number(info.carbs),
+        fats: Number(docSnap.data().fats) + Number(info.fats),
+        proteins: Number(docSnap.data().proteins) + Number(info.proteins),
         date: window.getDate("day"),
     })
     }

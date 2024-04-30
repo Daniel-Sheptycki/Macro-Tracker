@@ -23,33 +23,87 @@ const firebaseConfig = {
 
 };
 
+// const commonIngredients = [
+//   {
+//       name: "Apple",
+//       calories: 95,
+//       carbs: 25,
+//       fats: 0.3,
+//       proteins: 0.5,
+//       servingSize: 1,
+//       servingUnit: "amount-of-item"
+//   },
+//   {
+//       name: "Banana",
+//       calories: 105,
+//       carbs: 27,
+//       fats: 0.4,
+//       proteins: 1.3,
+//       servingSize: 1,
+//       servingUnit: "amount-of-item"
+//   },
+//   {
+//       name: "Broccoli",
+//       calories: 55,
+//       carbs: 11,
+//       fats: 0.6,
+//       proteins: 4.2,
+//       servingSize: 91, // 1 cup chopped broccoli is approximately 91 grams
+//       servingUnit: "g"
+//   },
+//   {
+//       name: "Egg",
+//       calories: 72,
+//       carbs: 0.4,
+//       fats: 4.8,
+//       proteins: 6.3,
+//       servingSize: 50, // Average weight of one large egg in grams
+//       servingUnit: "g"
+//   },
+
+//   {
+//       name: "Pasta (Spaghetti)",
+//       calories: 220,
+//       carbs: 43,
+//       fats: 1.3,
+//       proteins: 8.1,
+//       servingSize: 2,
+//       servingUnit: "oz"
+//   },
+//   {
+//       name: "Olive Oil",
+//       calories: 119,
+//       carbs: 0,
+//       fats: 13.5,
+//       proteins: 0,
+//       servingSize: 1,
+//       servingUnit: "oz"
+//   },
+//   {
+//       name: "Almonds",
+//       calories: 579,
+//       carbs: 21,
+//       fats: 49.4,
+//       proteins: 21,
+//       servingSize: 1,
+//       servingUnit: "oz"
+//   },
+//   {
+//     name: "Sugar (Granulated)",
+//     calories: 49,
+//     carbs: 12.6,
+//     fats: 0,
+//     proteins: 0,
+//     servingSize: 4.2, // 1 teaspoon of granulated sugar is approximately 4.2 grams
+//     servingUnit: "g"
+//   },
+//   // Add more ingredients as needed
+// ];
 const commonIngredients = [
+  //BREADS
   {
-      name: "Apple",
-      calories: 95,
-      carbs: 25,
-      fats: 0.3,
-      proteins: 0.5,
-      servingSize: 1,
-      servingUnit: "amount-of-item"
-  },
-  {
-      name: "Banana",
-      calories: 105,
-      carbs: 27,
-      fats: 0.4,
-      proteins: 1.3,
-      servingSize: 1,
-      servingUnit: "amount-of-item"
-  },
-  {
-      name: "Broccoli",
-      calories: 55,
-      carbs: 11,
-      fats: 0.6,
-      proteins: 4.2,
-      servingSize: 91, // 1 cup chopped broccoli is approximately 91 grams
-      servingUnit: "g"
+    optGroup: true,
+    tag: '<optgroup label="Breads">'
   },
   {
       name: "Whole Wheat Bread",
@@ -97,40 +151,13 @@ const commonIngredients = [
       servingUnit: "g"
   },
   {
-      name: "Egg",
-      calories: 72,
-      carbs: 0.4,
-      fats: 4.8,
-      proteins: 6.3,
-      servingSize: 50, // Average weight of one large egg in grams
-      servingUnit: "g"
+    optGroup: true,
+    tag: '</optgroup>'
   },
+  //RICE
   {
-      name: "Chicken Breast",
-      calories: 165,
-      carbs: 0,
-      fats: 3.6,
-      proteins: 31,
-      servingSize: 3.5,
-      servingUnit: "oz"
-  },
-  {
-      name: "Spinach",
-      calories: 7,
-      carbs: 1,
-      fats: 0.1,
-      proteins: 0.9,
-      servingSize: 1,
-      servingUnit: "oz"
-  },
-  {
-      name: "Tomato",
-      calories: 22,
-      carbs: 5,
-      fats: 0.2,
-      proteins: 1,
-      servingSize: 1,
-      servingUnit: "amount-of-item"
+    optGroup: true,
+    tag: '<optgroup label="Rice">'
   },
   {
       name: "White Rice (Long Grain)",
@@ -178,6 +205,96 @@ const commonIngredients = [
       servingUnit: "g"
   },
   {
+    optGroup: true,
+    tag: '</optgroup>'
+  },
+  //OTHER STARCH
+  {
+    optGroup: true,
+    tag: '<optgroup label="Other Starchy Items">'
+  },
+  {
+    optGroup: true,
+    tag: '</optgroup>'
+  },
+  //PROTEINS
+  {
+    optGroup: true,
+    tag: '<optgroup label="Proteins">'
+  },
+  {
+    name: "Chicken Breast",
+    calories: 165,
+    carbs: 0,
+    fats: 3.6,
+    proteins: 31,
+    servingSize: 3.5,
+    servingUnit: "oz"
+  },
+  {
+    name: "Salmon (Atlantic)",
+    calories: 206,
+    carbs: 0,
+    fats: 10.9,
+    proteins: 22,
+    servingSize: 3,
+    servingUnit: "oz"
+  },
+  {
+    name: "Ground Beef (80% lean)",
+    calories: 254,
+    carbs: 0,
+    fats: 20.3,
+    proteins: 17.3,
+    servingSize: 3,
+    servingUnit: "oz"
+  },
+  {
+    optGroup: true,
+    tag: '</optgroup>'
+  },
+  //VEGETABLES
+  {
+    optGroup: true,
+    tag: '<optgroup label="Vegetables">'
+  },
+  {
+    name: "Broccoli",
+    calories: 55,
+    carbs: 11,
+    fats: 0.6,
+    proteins: 4.2,
+    servingSize: 91, // 1 cup chopped broccoli is approximately 91 grams
+    servingUnit: "g"
+  },
+  {
+    name: "Lentils",
+    calories: 230,
+    carbs: 40,
+    fats: 0.8,
+    proteins: 18,
+    servingSize: 1,
+    servingUnit: "amount-of-item"
+  },
+  {
+      name: "Spinach",
+      calories: 7,
+      carbs: 1,
+      fats: 0.1,
+      proteins: 0.9,
+      servingSize: 1,
+      servingUnit: "oz"
+  },
+  {
+      name: "Tomato",
+      calories: 22,
+      carbs: 5,
+      fats: 0.2,
+      proteins: 1,
+      servingSize: 1,
+      servingUnit: "amount-of-item"
+  },
+  {
       name: "Potato",
       calories: 161,
       carbs: 37,
@@ -205,58 +322,131 @@ const commonIngredients = [
       servingUnit: "amount-of-item"
   },
   {
-      name: "Salmon (Atlantic)",
-      calories: 206,
-      carbs: 0,
-      fats: 10.9,
-      proteins: 22,
-      servingSize: 3,
-      servingUnit: "oz"
+    optGroup: true,
+    tag: '</optgroup>'
+  },
+  //FRUITS
+  {
+    optGroup: true,
+    tag: '<optgroup label="Fruits">'
   },
   {
-      name: "Lentils",
-      calories: 230,
-      carbs: 40,
-      fats: 0.8,
-      proteins: 18,
+    name: "Apple",
+    calories: 95,
+    carbs: 25,
+    fats: 0.3,
+    proteins: 0.5,
+    servingSize: 1,
+    servingUnit: "amount-of-item"
+  },
+  {
+      name: "Frozen Mango",
+      calories: 90,
+      carbs: 22,
+      fats: 0.6,
+      proteins: 1.2,
+      servingSize: 150,
+      servingUnit: "g"
+  },
+    {
+      name: "Orange",
+      calories: 62,
+      carbs: 15.4,
+      fats: 0.2,
+      proteins: 1.2,
       servingSize: 1,
       servingUnit: "amount-of-item"
   },
   {
-      name: "Milk (Whole)",
-      calories: 149,
-      carbs: 11.7,
-      fats: 7.9,
-      proteins: 7.7,
+      name: "Grapes",
+      calories: 52,
+      carbs: 13.8,
+      fats: 0.3,
+      proteins: 0.6,
       servingSize: 1,
-      servingUnit: "amount-of-item"
+      servingUnit: "cup"
+  },
+  // Other fruits here...
+  {
+    optGroup: true,
+    tag: '</optgroup>'
+  },
+  //PLANT MILK
+  {
+    optGroup: true,
+    tag: '<optgroup label="PLant Milk">'
   },
   {
-      name: "Ground Beef (80% lean)",
-      calories: 254,
-      carbs: 0,
-      fats: 20.3,
-      proteins: 17.3,
-      servingSize: 3,
-      servingUnit: "oz"
+    name: "Soy Milk",
+    calories: 131,
+    carbs: 8,
+    fats: 4.2,
+    proteins: 11,
+    servingSize: 243, // 1 cup of soy milk is approximately 243 grams
+    servingUnit: "g"
   },
   {
-      name: "Pasta (Spaghetti)",
-      calories: 220,
-      carbs: 43,
-      fats: 1.3,
-      proteins: 8.1,
-      servingSize: 2,
-      servingUnit: "oz"
+    name: "Oat Milk",
+    calories: 120,
+    carbs: 16,
+    fats: 5,
+    proteins: 3,
+    servingSize: 240, // 1 cup of oat milk is approximately 240 grams
+    servingUnit: "g"
   },
   {
-      name: "Olive Oil",
-      calories: 119,
-      carbs: 0,
-      fats: 13.5,
-      proteins: 0,
-      servingSize: 1,
-      servingUnit: "oz"
+    name: "Almond Milk",
+    calories: 60,
+    carbs: 8,
+    fats: 2.5,
+    proteins: 1,
+    servingSize: 240, // 1 cup of almond milk is approximately 240 grams
+    servingUnit: "g"
+  },
+  {
+    name: "Soy Milk (Unsweetened)",
+    calories: 80,
+    carbs: 4,
+    fats: 4,
+    proteins: 7,
+    servingSize: 240, // 1 cup of unsweetened soy milk is approximately 240 grams
+    servingUnit: "g"
+  },
+  {
+    name: "Almond Milk (Unsweetened)",
+    calories: 30,
+    carbs: 1,
+    fats: 2.5,
+    proteins: 1,
+    servingSize: 240, // 1 cup of unsweetened almond milk is approximately 240 grams
+    servingUnit: "g"
+  },
+  {
+    name: "Oat Milk (Unsweetened)",
+    calories: 120,
+    carbs: 16,
+    fats: 5,
+    proteins: 3,
+    servingSize: 240, // 1 cup of unsweetened oat milk is approximately 240 grams
+    servingUnit: "g"
+  },
+  {
+    name: "Coconut Milk (Unsweetened)",
+    calories: 45,
+    carbs: 1,
+    fats: 4.5,
+    proteins: 0,
+    servingSize: 240, // 1 cup of unsweetened coconut milk is approximately 240 grams
+    servingUnit: "g"
+  },
+  {
+    optGroup: true,
+    label: '</optgroup>'
+  },
+  //DAIRY
+  {
+    optGroup: true,
+    label: '<optgroup label="Dairy">'
   },
   {
       name: "Yogurt (Plain, Low-fat)",
@@ -277,42 +467,19 @@ const commonIngredients = [
       servingUnit: "oz"
   },
   {
-      name: "Orange",
-      calories: 62,
-      carbs: 15.4,
-      fats: 0.2,
-      proteins: 1.2,
+      name: "Milk (Whole)",
+      calories: 149,
+      carbs: 11.7,
+      fats: 7.9,
+      proteins: 7.7,
       servingSize: 1,
       servingUnit: "amount-of-item"
   },
   {
-      name: "Grapes",
-      calories: 52,
-      carbs: 13.8,
-      fats: 0.3,
-      proteins: 0.6,
-      servingSize: 1,
-      servingUnit: "cup"
+    optGroup: true,
+    label: '</optgroup>'
   },
-  {
-      name: "Almonds",
-      calories: 579,
-      carbs: 21,
-      fats: 49.4,
-      proteins: 21,
-      servingSize: 1,
-      servingUnit: "oz"
-  },
-  {
-      name: "Frozen Mango",
-      calories: 90,
-      carbs: 22,
-      fats: 0.6,
-      proteins: 1.2,
-      servingSize: 150,
-      servingUnit: "g"
-  },
-  // Add more ingredients as needed
+  // Continue with other ingredient groups...
 ];
 //TEMPLATE: 
 // {
@@ -541,11 +708,18 @@ function getChosenIngredient() {
 function addCommonIngredients() {
   let iterator = 0;
   commonIngredients.forEach(ingredient => {
-    document.getElementById("select-from-cmn-ingredients").insertAdjacentHTML("beforeend", `
+    if (!ingredient.optGroup) {
+      document.getElementById("select-from-cmn-ingredients").insertAdjacentHTML("beforeend", `
       <option value="${iterator}" id="option-ingredient-${iterator++}" >
         ${ingredient.name}
       </option>
-    `);
+    }
+    `)
+    } else {
+      document.getElementById("select-from-cmn-ingredients").insertAdjacentHTML("beforeend", `
+        ${ingredient.tag}
+      `)
+    }
   });
   document.getElementById("select-from-cmn-ingredients").addEventListener("change", () => {
     const chosenIngredient = getChosenIngredient();
