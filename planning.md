@@ -2,12 +2,8 @@ Lots of stuff id like to do,
 INCOMPLETE:
 -Daily macro count / desired calorie goals
 -Recommened favourites
--Library use in github pages
 -Cleaner Code
--Reset "create-account" in local storage when entering sign in page
 -Add macros that are a variation of the meal
--When adding a new meal from add-macros, just add it with the only ingredient being the meal.
-
 -Add a search to all instances where all user meals are being shown
 
 IN PROGRESS:
@@ -28,3 +24,6 @@ COMPLETED:
 -Full mobile support
 -Easier and more managable menu's
 -Add Meal
+-When adding a new meal from add-macros, just add it with the only ingredient being the meal.
+-Reset "create-account" in local storage when entering sign in page
+-Library use in github pages ?

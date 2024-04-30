@@ -231,8 +231,27 @@ const commonIngredients = [
       servingSize: 1,
       servingUnit: "oz"
   },
+  {
+      name: "Frozen Mango",
+      calories: 90,
+      carbs: 22,
+      fats: 0.6,
+      proteins: 1.2,
+      servingSize: 150,
+      servingUnit: "g"
+  },
   // Add more ingredients as needed
 ];
+//TEMPLATE: 
+// {
+//   name: "",
+//   calories: ,
+//   carbs: ,
+//   fats: ,
+//   proteins: ,
+//   servingSize: ,
+//   servingUnit: ""
+// },
 
 // Initialize Firebase
 
