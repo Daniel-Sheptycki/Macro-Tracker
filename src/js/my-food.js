@@ -332,6 +332,8 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
   });
   //Add new meal to DB passing the meal as a solo ingredient
   addMeal(inputs);
+
+  refreshUserMealsList();
 })
 //Revert button under add new ingredient (ingredients)
 document.querySelector("#add-by-ingredient-inputs #add-ingredient-menu i").addEventListener("click", () => {
@@ -379,6 +381,8 @@ document.getElementById("add-meal-ingredient-button").addEventListener("click", 
 
   //Reset the DOM
   refreshMealInProgress();
+
+  refreshUserMealsList();
 
   document.getElementById("meal-in-progress-ingredients").innerHTML = "";
 });
