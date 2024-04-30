@@ -532,7 +532,7 @@ async function getIngredients(selectedMeal) {
     <tr class="ingredient">
       <td id="ingredient-${iterator}">
         <header>
-          <p>${ingredient.size} ${ingredient.ingredientName}:</p>
+          <p>${ingredient.size}${ingredient.unit} ${ingredient.ingredientName}:</p>
           <i class="fa-solid fa-angle-up"></i>
         </header>
         <div class="info-view" style="display: none">
