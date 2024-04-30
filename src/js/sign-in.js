@@ -42,6 +42,7 @@ const db = getFirestore(app);
 
 if (sessionStorage.getItem("create-account") == "true") {
   SwitchInterface("create-account-field")
+  sessionStorage.clear();
 }
 function SwitchInterface(field) {
     document.getElementById(field).style = "display: flex";

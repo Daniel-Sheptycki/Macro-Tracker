@@ -24,10 +24,7 @@ Clean edit icon to alter it, changing the tags to inputs allowing them to be alt
 clean slightly darker box containing dropdown options with a vertically stacked list of all ingredients in the selected meal.
 when ingredient dropped downdisplay its macros that it contributes to the meal, aswell as a remove and edit button
 
-ADD MEAL:
-very similar to add-meal page, just cleaner, more legible
-When nothing is inputted enter 0 to database
-Add the servingUnit to database
 COMPLETED:
 -Full mobile support
 -Easier and more managable menu's
+-Add Meal
