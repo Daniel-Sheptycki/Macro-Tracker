@@ -207,7 +207,9 @@ main > header h2 {
 #add-by-ingredient-inputs {
     display: none;
 }
-
+#add-meal form #meal-to-be-added-info {
+    display: none;
+}
 #add-meal form #meal-to-be-added-info header {
     padding: 1rem;
     display: flex;
@@ -238,11 +240,13 @@ main > header h2 {
     cursor: pointer;
 }
 #add-by-ingredient-inputs #add-ingredient-menu i {
+    width: 100%;
+    text-align: left;
     cursor: pointer;
 }
 #add-ingredient-menu {
     width: 100%;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }

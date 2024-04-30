@@ -252,13 +252,14 @@ let selectedMeal = undefined;
 
 let username = window.findCookie("username");
 
-let mealInProgess = {};
+let mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
 
 //RESET INFO AFTER COMING BACK FROFM ADDING A INGREDIENT
 
 refreshUserMealsList();
 
 document.getElementById("lone-meal-option").checked = true;
+//New meal selected to view/edit
 document.getElementById("select-meal-to-edit").addEventListener("change", () => {
     selectedMeal = (newMealSelectOption.value);
     if (selectedMeal == undefined || selectedMeal == "undefined") {
@@ -266,26 +267,31 @@ document.getElementById("select-meal-to-edit").addEventListener("change", () => 
     } else {
       updateMealInfo(selectedMeal);
     }
-  });
+});
+//Delete meal button clicked
 document.getElementById("delete-meal-button").addEventListener("click", () => {
     deleteMealButtonClicked();
 })
+//Add by "meal"
 document.getElementById("lone-meal-option").addEventListener("change", function () {
     if (this.checked) {
         mealMenu.style.display = "block";
         ingredientMenu.style.display = "none";
     }
 });
-// document.getElementById("ingredient-meal-option").addEventListener("change", function () {
-//     if (this.checked) {
-//         mealMenu.style.display = "none";
-//         ingredientMenu.style.display = "block";
-//     }
-// });
+//Add by "ingredients"
+document.getElementById("ingredient-meal-option").addEventListener("change", function () {
+    if (this.checked) {
+        mealMenu.style.display = "none";
+        ingredientMenu.style.display = "block";
+    }
+});
+//Add new ingredient menu switch
 document.getElementById("add-ingredient-menu-button").addEventListener("click", () => {
   document.getElementById("meal-to-be-added-info").style.display = "none";
   document.getElementById("add-ingredient-menu").style.display = "flex";
 })
+//Add a new meal (meal)
 document.getElementById("add-meal-button").addEventListener("click", () => {
   //Get inputs
   const inputs = {
@@ -308,8 +314,12 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
   //Add new meal to DB passing the meal as a solo ingredient
   addMeal(inputs);
 })
+//Revert button under add new ingredient (ingredients)
 document.querySelector("#add-by-ingredient-inputs #add-ingredient-menu i").addEventListener("click", () => {
+  document.getElementById("meal-to-be-added-info").style.display = "block";
+  document.getElementById("add-ingredient-menu").style.display = "none";
 })
+//Add ingredient button (ingredients)
 document.getElementById("add-ingredient-button").addEventListener("click", () => {
   //Add ingredient button clicked
 
@@ -330,21 +340,105 @@ document.getElementById("add-ingredient-button").addEventListener("click", () =>
   document.getElementById("meal-to-be-added-info").style.display = "block";
   document.getElementById("add-ingredient-menu").style.display = "none";
 })
+//Re-scale size
 document.getElementById("ingredient-size-input").addEventListener("change", () => {
   scaleIngredient(getChosenIngredient(), document.getElementById("ingredient-size-input").value);
 })
+//Add a new meal (ingredients)
+document.getElementById("add-meal-ingredient-button").addEventListener("click", () => {
+  //Assign the name and notes to the object.
+  Object.assign(mealInProgess, {name: prompt("What is your new meal's name?"), notes: prompt("Add notes for your new meal.")});
+
+  //Add the meal in DB
+  addMeal(mealInProgess);
+
+  //Reset the meal in progress
+  mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
+
+  //Reset the form
+  document.getElementById("add-meal-forum").reset();
+
+  //Reset the DOM
+  refreshMealInProgress();
+
+  document.getElementById("meal-in-progress-ingredients").innerHTML = "";
+});
 addCommonIngredients();
 function addIngredientToMealInProgress(ingredient) {
-  //Update big numbers
-  mealInProgess.calories += ingredient.calories;
-  mealInProgess.carbs += ingredient.carbs;
-  mealInProgess.fats += ingredient.fats;
-  mealInProgess.proteins += ingredient.proteins;
-  if (mealInProgess.ingredients == undefined) {
-    mealInProgess.ingredients = [];
+  function addNumbers() {
+    //Update big numbers
+    mealInProgess.calories += Number(ingredient.calories);
+    mealInProgess.carbs += Number(ingredient.carbs);
+    mealInProgess.fats += Number(ingredient.fats);
+    mealInProgess.proteins += Number(ingredient.proteins);
+    if (mealInProgess.ingredients == undefined) {
+      mealInProgess.ingredients = [];
+    }
+    //Add the ingredient
+    mealInProgess.ingredients.push(ingredient);
   }
-  //Add the ingredient
-  mealInProgess.ingredients.push(ingredient);
+  function addDom(ingredient) {
+  //Create the html for the ingredient
+  document.getElementById("meal-in-progress-ingredients").insertAdjacentHTML("beforeend", `
+  <tr id="meal-in-progress-ingredient-${mealInProgess.ingredientIterator}">
+    <td>
+      <p>${ingredient.name}</p>
+      <i class="fa-solid fa-x" id="remove-ingredient-${mealInProgess.ingredientIterator}"></i>
+    </td>
+  </tr>
+`)
+
+  //Add an event listener to the X
+  document.getElementById(`remove-ingredient-${mealInProgess.ingredientIterator++}`).addEventListener("click", (element) => {
+    //Assign values
+    element = element.target;
+    const id = Number(element.id.split("-")[2]) 
+
+    //Remove all DOM
+    document.getElementById("meal-in-progress-ingredients").innerHTML = "";
+
+    //Remove the numbers and items from inner state
+    removeIngredientFromMealInProgress(id);
+    
+    //Re-Add all ingredients
+    mealInProgess.ingredientIterator = 0;
+
+    mealInProgess.ingredients.forEach(ingredient => {
+      addDom(ingredient);
+    });
+  })
+  }
+
+  addNumbers();
+
+  refreshMealInProgress();
+
+  addDom(ingredient);
+}
+function removeIngredientFromMealInProgress(id) {
+  const ingredientToRemove = mealInProgess.ingredients[id];
+  //Subtract all the values
+  mealInProgess.calories -= ingredientToRemove .calories;
+  mealInProgess.carbs -= ingredientToRemove .carbs;
+  mealInProgess.fats -= ingredientToRemove .fats;
+  mealInProgess.proteins -= ingredientToRemove .proteins;
+  const newIngredients = [];
+  //Add every ingredient except the one youd like to remove to the new array
+  mealInProgess.ingredients.forEach(ingredient => {
+    if (ingredient != ingredientToRemove) {
+      newIngredients.push(ingredient);
+    }
+  });
+  //set it to the new array
+  mealInProgess.ingredients = newIngredients;
+
+  refreshMealInProgress();
+}
+function refreshMealInProgress() {
+  document.getElementById("meal-in-progress-calories-count").innerHTML = "Calories: "+Math.ceil(mealInProgess.calories);
+  document.getElementById("meal-in-progress-carbs-count").innerHTML = "Carbs: "+Math.ceil(mealInProgess.carbs);
+  document.getElementById("meal-in-progress-fats-count").innerHTML = "Fats: "+Math.ceil(mealInProgess.fats);
+  document.getElementById("meal-in-progress-proteins-count").innerHTML = "Proteins: "+Math.ceil(mealInProgess.proteins);
 }
 function getChosenIngredient() {
   return commonIngredients[Number(document.getElementById("select-from-cmn-ingredients").value)];

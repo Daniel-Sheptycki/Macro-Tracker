@@ -165,15 +165,17 @@
                   checked="true"
                 />
               </div>
-              <!-- <div class="radio-option">
-                <label for="ingredient-meal-option">Ingredients</label>
+              <div class="radio-option">
+                <label for="ingredient-meal-option"
+                  >Ingredients (recommended)</label
+                >
                 <input
                   type="radio"
                   name="add-by"
                   id="ingredient-meal-option"
                   checked="false"
                 />
-              </div> -->
+              </div>
             </header>
             <div id="add-by-meal-inputs" class="add-meal-section">
               <div class="inputs-wrapper">
@@ -228,10 +230,10 @@
               <div id="meal-to-be-added-info">
                 <header>
                   <h4>Meal to be added:</h4>
-                  <p>Calories: 0</p>
-                  <p>Carbs: 0</p>
-                  <p>Fats: 0</p>
-                  <p>Proteins: 0</p>
+                  <p id="meal-in-progress-calories-count">Calories: 0</p>
+                  <p id="meal-in-progress-carbs-count">Carbs: 0</p>
+                  <p id="meal-in-progress-fats-count">Fats: 0</p>
+                  <p id="meal-in-progress-proteins-count">Proteins: 0</p>
                 </header>
                 <table>
                   <thead>
@@ -239,26 +241,7 @@
                       <th>Ingredients</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <p>Ingredient 1</p>
-                        <i class="fa-solid fa-x"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>Ingredient 2</p>
-                        <i class="fa-solid fa-x"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>Ingredient 3</p>
-                        <i class="fa-solid fa-x"></i>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tbody id="meal-in-progress-ingredients"></tbody>
                 </table>
                 <div class="buttons">
                   <button id="add-ingredient-menu-button" type="button">
