@@ -593,7 +593,7 @@ document.getElementById("add-meal-ingredient-button").addEventListener("click", 
 
   setTimeout(() => {
     window.location.reload();
-  }, 750);
+  }, 1000);
 
 });
 addCommonIngredients();
