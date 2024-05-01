@@ -131,15 +131,6 @@ const commonIngredientsGroups = [
           servingUnit: "cup"
       },
       {
-          name: "Apple",
-          calories: 95,
-          carbs: 25,
-          fats: 0.3,
-          proteins: 0.5,
-          servingSize: 1,
-          servingUnit: "amount-of-item"
-      },
-      {
           name: "Banana",
           calories: 105,
           carbs: 27,
@@ -310,8 +301,8 @@ const commonIngredientsGroups = [
     },
     ]
   },
-  { //Plant Milks
-    label: "Plant Milk",
+  { //Plant Recplacements
+    label: "Plant Replacements",
     ingredients: [
       {
         name: "Soy Milk",
@@ -376,6 +367,15 @@ const commonIngredientsGroups = [
         servingSize: 240, // 1 cup of unsweetened coconut milk is approximately 240 grams
         servingUnit: "g"
       },
+      {
+        name: "Vegenaise (Soy-Free)",
+        calories: 80,
+        carbs: 0,
+        fats: 9,
+        proteins: 0,
+        servingSize: 14,
+        servingUnit: "g"
+      }
     ]
   },
   { //Dairy
@@ -539,7 +539,11 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
   //Add new meal to DB passing the meal as a solo ingredient
   addMeal(inputs);
 
-  refreshUserMealsList();
+  setTimeout(refreshUserMealsList(), 1000);
+  
+  // document.querySelector("form").reset();
+  
+  // window.location.reload();
 })
 //Revert button under add new ingredient (ingredients)
 document.querySelector("#add-by-ingredient-inputs #add-ingredient-menu i").addEventListener("click", () => {
@@ -571,7 +575,7 @@ document.getElementById("add-ingredient-button").addEventListener("click", () =>
 document.getElementById("ingredient-size-input").addEventListener("change", () => {
   scaleIngredient(getChosenIngredient(), document.getElementById("ingredient-size-input").value);
 })
-//Add a new meal (ingredients)
+//Add a new meal (ingredients) PROBLEMATIC (FIX IT)
 document.getElementById("add-meal-ingredient-button").addEventListener("click", () => {
   //Assign the name and notes to the object.
   Object.assign(mealInProgess, {name: prompt("What is your new meal's name?"), notes: prompt("Add notes for your new meal.")});
@@ -582,15 +586,15 @@ document.getElementById("add-meal-ingredient-button").addEventListener("click", 
   //Reset the meal in progress
   mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
 
-  //Reset the form
-  document.getElementById("add-meal-forum").reset();
-
   //Reset the DOM
   refreshMealInProgress();
 
-  refreshUserMealsList();
-
   document.getElementById("meal-in-progress-ingredients").innerHTML = "";
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 750);
+
 });
 addCommonIngredients();
 function addIngredientToMealInProgress(ingredient) {

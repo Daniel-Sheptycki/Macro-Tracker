@@ -51,8 +51,10 @@ async function addMeal(meal) {
         mealName: meal.name,
         notes: meal.notes
       })
+      console.log("meal added")
       meal.ingredients.forEach(ingredient => {
         addIngredientToMeal(ingredient, meal.name);
+        console.log("ingredient added")
       });
     } 
     else 
