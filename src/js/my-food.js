@@ -104,6 +104,24 @@ const commonIngredientsGroups = [
         servingUnit: "amount-of-item"
       },
       {
+        name: "Cantaloupe",
+        calories: 53,
+        carbs: 13,
+        fats: 0.3,
+        proteins: 1.3,
+        servingSize: 177, // 1 cup diced cantaloupe is approximately 177 grams
+        servingUnit: "g"
+    },
+    {
+        name: "Strawberries",
+        calories: 49,
+        carbs: 11,
+        fats: 0.4,
+        proteins: 1,
+        servingSize: 152, // 1 cup of sliced strawberries is approximately 152 grams
+        servingUnit: "g"
+    },
+      {
           name: "Frozen Mango",
           calories: 90,
           carbs: 22,

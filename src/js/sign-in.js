@@ -74,8 +74,8 @@ async function signIn(username, password) {
   if (docSnap.exists()) {
     const profileInfo = docSnap.data();
     if (profileInfo.password == password) {
-      document.cookie = `signedin=true; path=/`
-      document.cookie = `username=${username}; path=/`;
+      document.cookie = `signedin=true; path=/; expires=Thu, 18 Dec 2050 12:00:00 UTC;`
+      document.cookie = `username=${username}; path=/; expires=Thu, 18 Dec 2050 12:00:00 UTC;`;
       window.location.assign("../index.html")
     }
   } else {
