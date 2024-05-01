@@ -539,7 +539,9 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
   //Add new meal to DB passing the meal as a solo ingredient
   addMeal(inputs);
 
-  setTimeout(refreshUserMealsList(), 1000);
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
   
   // document.querySelector("form").reset();
   
