@@ -54,6 +54,24 @@ const commonIngredientsGroups = [
           servingUnit: "oz"
       },
       {
+        name: "Lettuce",
+        calories: 5,
+        carbs: 1,
+        fats: 0.1,
+        proteins: 0.5,
+        servingSize: 56, // 1 cup shredded lettuce is approximately 56 grams
+        servingUnit: "g"
+    },
+    {
+        name: "Onion",
+        calories: 44,
+        carbs: 10,
+        fats: 0.1,
+        proteins: 1.1,
+        servingSize: 110, // 1 cup chopped onion is approximately 110 grams
+        servingUnit: "g"
+    },
+      {
           name: "Tomato",
           calories: 22,
           carbs: 5,
@@ -189,6 +207,15 @@ const commonIngredientsGroups = [
         servingSize: 3,
         servingUnit: "oz"
       },
+      {
+        name: "Turkey",
+        calories: 135,
+        carbs: 0,
+        fats: 5,
+        proteins: 20,
+        servingSize: 100, // 100 grams of turkey
+        servingUnit: "g"
+      },
     ]
   },
   { //Bread
@@ -238,6 +265,15 @@ const commonIngredientsGroups = [
         proteins: 2.7,
         servingSize: 32, // Average weight of one slice of rye bread in grams
         servingUnit: "g"
+      },
+      {
+        name: "Brioche Bun",
+        calories: 239,
+        carbs: 28,
+        fats: 12,
+        proteins: 6,
+        servingSize: 1, // Average weight of one brioche bun in grams
+        servingUnit: "amount-of-item"
       },
     ]
   },
@@ -448,6 +484,15 @@ const commonIngredientsGroups = [
         proteins: 21,
         servingSize: 1,
         servingUnit: "oz"
+    },
+    {
+      name: "Pistachios",
+      calories: 562,
+      carbs: 28,
+      fats: 45,
+      proteins: 21,
+      servingSize: 100, // 100 grams of pistachios
+      servingUnit: "g"
     },
     ]
   },
