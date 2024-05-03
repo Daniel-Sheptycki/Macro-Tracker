@@ -1,6 +1,11 @@
 Lots of stuff id like to do,
 INCOMPLETE:
 -Daily macro count / desired calorie goals
+-Categorize Meal's.
+-Have Options to create a new category
+-Add pre-existing meal to the category
+-When meals are being searched through display categories VIA optgroup,
+-Un-categorized meals will fall under "other"
 -Recommened favourites
 -Cleaner Code
 -Add macros that are a variation of the meal

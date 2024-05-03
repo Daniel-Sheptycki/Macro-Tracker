@@ -1,0 +1,13 @@
+#chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    canvas {
+        width: 100%;
+    }
+}
+#top-row {
+    margin: 0 2rem 2rem;
+    padding: 5rem;
+    border-bottom: 1px solid black;
+}
