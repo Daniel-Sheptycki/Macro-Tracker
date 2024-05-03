@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase
 
 import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
-import Chart from '../../node_modules/chart.js/auto'
+// import Chart from "../../node_modules/chart/index.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -45,7 +45,7 @@ const db = getFirestore(app);
 
 updateTodaysMacros();
 updateTodaysMacrosInputs();
-getAllInputs();
+// getAllInputs();
 
 async function updateTodaysMacros() {
     let username = window.findCookie("username");
@@ -125,32 +125,32 @@ async function updateTodaysMacrosInputs() {
     });
     //the expand button, add the event listener
 }
-async function getAllInputs() {
-  const macroRef = collection(db, "users", username, "macro-inputs");
-  const macroSnap = await getDocs(macroRef);
-  const data = {
-    calories: {label: "Calories", backgroundColor: "red", borderColor: "red", data: []},
-    carbs: {label: "Carbs", backgroundColor: "blue", borderColor: "blue", data: []},
-    fats: {label: "Fats", backgroundColor: "green", borderColor: "green", data: []},
-    proteins: {label: "Proteins", backgroundColor: "orange", borderColor: "orange", data: []},
-    dates: [],
-  }
-  macroSnap.forEach(input => {
-    var inputData = input.data();
-    data.calories.data.push(inputData.calories);
-    data.carbs.data.push(inputData.carbs);
-    data.fats.data.push(inputData.fats);
-    data.proteins.data.push(inputData.proteins);
-    data.dates.push(inputData.date);
-  });
-  BuildChart([data.calories, data.carbs, data.fats, data.proteins], data.dates);
-}
-function BuildChart(datasets, labels) {
-  new Chart("all-time-chart", {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: datasets,
-    },
-  });
-}
+// async function getAllInputs() {
+//   const macroRef = collection(db, "users", username, "macro-inputs");
+//   const macroSnap = await getDocs(macroRef);
+//   const data = {
+//     calories: {label: "Calories", backgroundColor: "red", borderColor: "red", data: []},
+//     carbs: {label: "Carbs", backgroundColor: "blue", borderColor: "blue", data: []},
+//     fats: {label: "Fats", backgroundColor: "green", borderColor: "green", data: []},
+//     proteins: {label: "Proteins", backgroundColor: "orange", borderColor: "orange", data: []},
+//     dates: [],
+//   }
+//   macroSnap.forEach(input => {
+//     var inputData = input.data();
+//     data.calories.data.push(inputData.calories);
+//     data.carbs.data.push(inputData.carbs);
+//     data.fats.data.push(inputData.fats);
+//     data.proteins.data.push(inputData.proteins);
+//     data.dates.push(inputData.date);
+//   });
+//   BuildChart([data.calories, data.carbs, data.fats, data.proteins], data.dates);
+// }
+// function BuildChart(datasets, labels) {
+//   new Chart("all-time-chart", {
+//     type: "line",
+//     data: {
+//       labels: labels,
+//       datasets: datasets,
+//     },
+//   });
+// }
