@@ -120,7 +120,12 @@ body > main header h3 {
     display: flex;
     justify-content: center;
 }
-
+#main-content-wrapper-statistics #todays-macro-inputs table {
+    width: 100%;
+}
+#main-content-wrapper-statistics #todays-macro-inputs #macro-inputs-field {
+    width: 100%;
+}
 #main-content-wrapper-statistics #todays-macro-inputs #macro-inputs-field td {
     border: 1px solid black;
 }
@@ -272,6 +277,9 @@ body > main header h3 {
     #main-content-wrapper-statistics #todays-macros {
         font-size: 1.25rem;
     }
+    #main-content-wrapper-statistics #todays-macro-inputs {
+        width: 30%;
+    }
 }
 
 @media screen and (min-width: 750px) {
@@ -297,9 +305,6 @@ body > main header h3 {
     #main-content-wrapper-statistics #todays-macros {
         font-size: 1.5rem;
     }
-    #main-content-wrapper-statistics .hidden-macros div {
-        width: 25%;
-    }
 }
 @media screen and (min-width: 1200px) {
     #dashboard-options nav li {
@@ -313,6 +318,9 @@ body > main header h3 {
     footer {
         position: relative;
         bottom: 0;
+    }
+    #main-content-wrapper-statistics .hidden-macros div {
+        width: 25%;
     }
 }
 
