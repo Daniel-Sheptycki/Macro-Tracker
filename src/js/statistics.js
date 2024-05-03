@@ -4,8 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase
 
 import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
-import Chart from 'chart.js/auto';
-// import Chart from '../node_modules/chart.js/auto/auto"'
+import Chart from '../node_modules/chart.js/auto/auto"'
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -144,7 +143,7 @@ async function getAllInputs() {
     data.proteins.data.push(inputData.proteins);
     data.dates.push(inputData.date);
   });
-  BuildChart([data.calories, data.carbs, data.fats, data.proteins], data.dates);
+  BuildChart([data.calories, data.carbs, data.fats, data.proteins], data.);
 }
 function BuildChart(datasets, labels) {
   new Chart("all-time-chart", {
