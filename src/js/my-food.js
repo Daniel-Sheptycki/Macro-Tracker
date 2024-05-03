@@ -216,6 +216,15 @@ const commonIngredientsGroups = [
         servingSize: 100, // 100 grams of turkey
         servingUnit: "g"
       },
+      {
+        name: "Ham",
+        calories: 145,
+        carbs: 0,
+        fats: 6,
+        proteins: 21,
+        servingSize: 100, // 100 grams of ham
+        servingUnit: "g"
+    },
     ]
   },
   { //Bread
@@ -273,8 +282,17 @@ const commonIngredientsGroups = [
         fats: 12,
         proteins: 6,
         servingSize: 1, // Average weight of one brioche bun in grams
-        servingUnit: "amount-of-item"
+        servingUnit: ""
       },
+      {
+        name: "Ciabatta Bun",
+        calories: 270,
+        carbs: 53,
+        fats: 2,
+        proteins: 10,
+        servingSize: 1, // Representing the item itself
+        servingUnit: ""
+    },
     ]
   },
   { //Rice
