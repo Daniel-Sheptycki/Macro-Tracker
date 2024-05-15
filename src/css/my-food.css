@@ -126,6 +126,8 @@ main > header h2 {
 
 .ingredient .info-edit button {
     width: 45%;
+    margin: 0 auto;
+    justify-content: center;
     background-color: white;
     border: 1px solid gray;
     color: rgb(91, 91, 91);
@@ -256,6 +258,29 @@ select optgroup {
 }
 select option, select optgroup {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+#categorize-content-wrapper {
+    margin: 0 auto;
+    width: 90%;
+    fieldset {
+        padding: 1rem 2rem;
+        position: relative;
+        i {
+            position: absolute;
+            top: 0%;
+            right: 1%;
+            cursor: pointer;
+        }
+    }
+    #all-categories-wrapper {
+
+    }
+    .parent {
+        display: flex;
+        > div {
+            width: 50%;
+        }
+    }
 }
 
 @media screen and (max-width: 550px) {

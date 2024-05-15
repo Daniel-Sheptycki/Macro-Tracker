@@ -1,27 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
+import { addMeal, getAllMeals, deleteMeal } from "./firebase.js";
 
-import { getFirestore, doc, getDocs, collection, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+// import Sortable from '../../sortable.complete.esm.js';
 
-import { addMeal } from "./firebase.js";
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
-
-  authDomain: "macro-tracker-615bd.firebaseapp.com",
-
-  projectId: "macro-tracker-615bd",
-
-  storageBucket: "macro-tracker-615bd.appspot.com",
-
-  messagingSenderId: "392337084618",
-
-  appId: "1:392337084618:web:71cebe7aae4f2940792433",
-
-  measurementId: "G-7M925H7FL6"
-
-};
 const commonIngredientsGroups = [
   { //Vegetables
     label: "Vegetables",
@@ -542,10 +522,21 @@ const commonIngredientsGroups = [
 
 // Initialize Firebase
 
-const app = initializeApp(firebaseConfig);
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
+let allMeals = [];
+getAllMeals()
+  //When all meals are retrieved
+  .then(returnedMeals => {
+    allMeals = returnedMeals;
+    document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Meals Retrieved"
+    document.querySelector("#edit-and-view-meal .status-text").style.color = "green";
+    setTimeout(() => {
+      document.querySelector("#edit-and-view-meal .status-text").innerHTML = "";
+    }, 3000)
+    refreshUserMealsList();
+  })
+  .catch(error => {
+    console.error("Error fetching meals:", error);
+  });
 
 let newMealSelectOption = document.getElementById("select-meal-to-edit");
 
@@ -556,27 +547,44 @@ const ingredientMenu = document.getElementById("add-by-ingredient-inputs");
 //Will hold the meal that is currently being viewed/edited
 let selectedMeal = undefined;
 
-let username = window.findCookie("username");
+let selectedMealId = undefined;
 
 let mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
-
-//RESET INFO AFTER COMING BACK FROFM ADDING A INGREDIENT
-
-refreshUserMealsList();
 
 document.getElementById("lone-meal-option").checked = true;
 //New meal selected to view/edit
 document.getElementById("select-meal-to-edit").addEventListener("change", () => {
-    selectedMeal = (newMealSelectOption.value);
-    if (selectedMeal == undefined || selectedMeal == "undefined") {
-      resetMealInfo();
-    } else {
+    selectedMeal = allMeals[newMealSelectOption.value];
+    selectedMealId = newMealSelectOption.value;
+    resetMealInfo();
+    if (selectedMeal) {
       updateMealInfo(selectedMeal);
     }
 });
 //Delete meal button clicked
 document.getElementById("delete-meal-button").addEventListener("click", () => {
-    deleteMealButtonClicked();
+  //Confirm meal deletion
+  if (confirm(`Are you sure you want to delete meal '${selectedMeal.mealName}'?`)) {
+    //Remove it from DB
+    deleteMeal(selectedMeal.mealName)
+      //After its removed from DB
+      .then(() => {
+        //Remove item from current list
+        allMeals.splice(selectedMealId, 1);
+
+        //Reset everything
+        document.getElementById("select-meal-to-edit").selectedIndex = 0;
+        document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Meal Deleted!";
+        document.querySelector("#edit-and-view-meal .status-text").style = "color: red";
+        newMealSelectOption.dispatchEvent(new Event("change"));
+        refreshUserMealsList();
+      })
+      //If something went wrong
+      .catch((err) => {
+        console.log(err);
+        alert("Something went wrong with deleting your meal")
+      })
+  }
 })
 //Add by "meal"
 document.getElementById("lone-meal-option").addEventListener("change", function () {
@@ -591,6 +599,7 @@ document.getElementById("ingredient-meal-option").addEventListener("change", fun
         mealMenu.style.display = "none";
         ingredientMenu.style.display = "block";
     }
+    console.log(allMeals)
 });
 //Add new ingredient menu switch
 document.getElementById("add-ingredient-menu-button").addEventListener("click", () => {
@@ -601,7 +610,7 @@ document.getElementById("add-ingredient-menu-button").addEventListener("click", 
 document.getElementById("add-meal-button").addEventListener("click", () => {
   //Get inputs
   const inputs = {
-    name: document.getElementById("meal-name-input").value,
+    mealName: document.getElementById("meal-name-input").value,
     notes: document.getElementById("meal-notes-input").value,
     calories: document.getElementById("meal-calories-input").value,
     carbs: document.getElementById("meal-carbs-input").value,
@@ -609,7 +618,7 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
     proteins: document.getElementById("meal-protein-input").value,
   }
   Object.assign(inputs, {ingredients: [{    
-    name: "Meal",
+    ingredientName: "Meal",
     calories: inputs.calories,
     carbs: inputs.carbs,
     fats: inputs.fats,
@@ -618,16 +627,24 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
     unit: "amount-of-item",}]
   });
   //Add new meal to DB passing the meal as a solo ingredient
-  addMeal(inputs);
+  addMeal(inputs).then( function () {
+    allMeals.push(inputs);
 
-  setTimeout(() => {
-    window.location.reload();
-  }, 1000);
-  
-  // document.querySelector("form").reset();
-  
-  // window.location.reload();
-})
+    refreshUserMealsList();
+
+    document.getElementById("add-meal-forum").reset();
+
+    addCommonIngredients();
+
+    document.querySelector("#add-meal > header .status-text").innerHTML = "Meal Added";
+    document.querySelector("#add-meal > header .status-text").style.color = "green";
+  }
+  ).catch((err) => {
+    console.log(err);
+    document.querySelector("#add-meal > header .status-text").innerHTML = "Error Adding Meal";
+    document.querySelector("#add-meal > header .status-text").style.color = "red";
+  });
+});
 //Revert button under add new ingredient (ingredients)
 document.querySelector("#add-by-ingredient-inputs #add-ingredient-menu i").addEventListener("click", () => {
   document.getElementById("meal-to-be-added-info").style.display = "block";
@@ -639,7 +656,7 @@ document.getElementById("add-ingredient-button").addEventListener("click", () =>
 
   //Get inputs
   const inputs = {
-  name: document.getElementById("ingredient-name-input").value,
+  ingredientName: document.getElementById("ingredient-name-input").value,
   size: document.getElementById("ingredient-size-input").value,
   unit: document.getElementById("ingredient-unit-input").value,
   calories: document.getElementById("ingredient-calories-input").value,
@@ -648,6 +665,8 @@ document.getElementById("add-ingredient-button").addEventListener("click", () =>
   proteins: document.getElementById("ingredient-protein-input").value,
   }
   document.getElementById("add-meal-forum").reset();
+
+  addCommonIngredients();
   //Add it to the current meal total
   addIngredientToMealInProgress(inputs);
   //Return to current meal view
@@ -658,28 +677,62 @@ document.getElementById("add-ingredient-button").addEventListener("click", () =>
 document.getElementById("ingredient-size-input").addEventListener("change", () => {
   scaleIngredient(getChosenIngredient(), document.getElementById("ingredient-size-input").value);
 })
-//Add a new meal (ingredients) PROBLEMATIC (FIX IT)
+//Add a new meal (ingredients)
 document.getElementById("add-meal-ingredient-button").addEventListener("click", () => {
   //Assign the name and notes to the object.
-  Object.assign(mealInProgess, {name: prompt("What is your new meal's name?"), notes: prompt("Add notes for your new meal.")});
+  Object.assign(mealInProgess, {mealName: prompt("What is your new meal's name?"), notes: prompt("Add notes for your new meal.")});
 
+  console.log("adding: ",mealInProgess)
   //Add the meal in DB
-  addMeal(mealInProgess);
+  addMeal(mealInProgess)
+    .then(() => {
+      allMeals.push(mealInProgess);
+      
+      //Reset the meal in progress
+      mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
 
-  //Reset the meal in progress
-  mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
+      refreshUserMealsList();
 
-  //Reset the DOM
-  refreshMealInProgress();
+      document.getElementById("add-meal-forum").reset();
+  
+      addCommonIngredients();
+      
+      //Reset the DOM
+      refreshMealInProgress();
 
-  document.getElementById("meal-in-progress-ingredients").innerHTML = "";
+      document.getElementById("meal-in-progress-ingredients").innerHTML = "";
 
-  setTimeout(() => {
-    window.location.reload();
-  }, 1000);
-
+      document.querySelector("#add-meal > header .status-text").innerHTML = "Meal Added";
+      document.querySelector("#add-meal > header .status-text").style.color = "green";
+    }
+    ).catch((err) => {
+      console.log(err);
+      document.querySelector("#add-meal > header .status-text").innerHTML = "Error Adding Meal";
+      document.querySelector("#add-meal > header .status-text").style.color = "red";
+    });
 });
 addCommonIngredients();
+
+// new Sortable(document.getElementById("item1"), {
+//   group: 'shared',
+//   animation: 150,
+//   onAdd: function (evt) {
+//     console.log("item added:", evt.item)
+//   },
+//   onRemove: function (evt) {
+//     console.log("item removed:", evt.item)
+//   }
+// }) 
+// new Sortable(document.getElementById("item2"), {
+//   group: 'shared',
+//   animation: 150,
+//   onAdd: function (evt) {
+//     console.log("item added:", evt.item)
+//   },
+//   onRemove: function (evt) {
+//     console.log("item removed:", evt.item)
+//   }
+// }) 
 function addIngredientToMealInProgress(ingredient) {
   function addNumbers() {
     //Update big numbers
@@ -698,7 +751,7 @@ function addIngredientToMealInProgress(ingredient) {
   document.getElementById("meal-in-progress-ingredients").insertAdjacentHTML("beforeend", `
   <tr id="meal-in-progress-ingredient-${mealInProgess.ingredientIterator}">
     <td>
-      <p>${ingredient.name}</p>
+      <p>${ingredient.ingredientName}</p>
       <i class="fa-solid fa-x" id="remove-ingredient-${mealInProgess.ingredientIterator}"></i>
     </td>
   </tr>
@@ -762,19 +815,19 @@ function getChosenIngredient() {
 }
 function addCommonIngredients() {
   let iterator = 0;
+  let htmlString = "";
   //For each ingredient group
   commonIngredientsGroups.forEach(ingredientGroup => {
     //Add the OptGroup
-    let htmlString = `<optgroup label="${ingredientGroup.label}">`;
+    htmlString += `<optgroup label="${ingredientGroup.label}">`;
     let subIterator = 0;
     ingredientGroup.ingredients.forEach(ingredient => {
       htmlString += `<option value="${iterator}-${subIterator++}">${ingredient.name}</option>`
     });
-    document.getElementById("select-from-cmn-ingredients").insertAdjacentHTML("beforeend", `
-    ${htmlString}</optgroup>;
-    `)
+    htmlString += "</optgroup>";
     iterator++;
   });
+  document.getElementById("select-from-cmn-ingredients").innerHTML = htmlString;
   document.getElementById("select-from-cmn-ingredients").addEventListener("change", () => {
     const chosenIngredient = getChosenIngredient();
     document.getElementById("ingredient-name-input").value = chosenIngredient.name;
@@ -793,11 +846,6 @@ function scaleIngredient(chosenIngredient, newSize) {
   document.getElementById("ingredient-fats-input").value = Math.ceil(chosenIngredient.fats * multiplier);
   document.getElementById("ingredient-protein-input").value = Math.ceil(chosenIngredient.proteins * multiplier);
 }
-function deleteMealButtonClicked() {
-    if (confirm(`Are you sure you want to delete meal '${selectedMeal}'?`)) {
-      deleteMealFromDb(selectedMeal);
-    }
-}
 function resetMealInfo() {
   document.getElementById("meal-info-cals").innerHTML = "";
   document.getElementById("meal-info-carbs").innerHTML = "";
@@ -808,30 +856,23 @@ function resetMealInfo() {
   document.getElementById("delete-meal-button").style = "display: none";
   document.querySelector("#ingredient-list tbody").innerHTML = "";
 }
-async function updateMealInfo(selectedMeal) {
-    // Recieves the "name" of the meal doc (which makes this hella easy)
-    const docRef = doc(db, "users", window.findCookie("username"), "meals", selectedMeal);
-    const docSnap = await getDoc(docRef);
-    document.getElementById("meal-info-cals").innerHTML = "Calories: "+docSnap.data().calories;
-    document.getElementById("meal-info-carbs").innerHTML = "Carbohydrates: "+docSnap.data().carbs;
-    document.getElementById("meal-info-fats").innerHTML = "Fats: "+docSnap.data().fats;
-    document.getElementById("meal-info-proteins").innerHTML = "Proteins:"+docSnap.data().proteins;
-    document.getElementById("meal-info-name").innerHTML = docSnap.data().mealName;
-    document.getElementById("meal-info-notes").innerHTML = docSnap.data().notes;
+function updateMealInfo(selectedMeal) {
+    document.getElementById("meal-info-cals").innerHTML = "Calories: " + Math.ceil(selectedMeal.calories);
+    document.getElementById("meal-info-carbs").innerHTML = "Carbohydrates: " + Math.ceil(selectedMeal.carbs);
+    document.getElementById("meal-info-fats").innerHTML = "Fats: " + Math.ceil(selectedMeal.fats);
+    document.getElementById("meal-info-proteins").innerHTML = "Proteins:" + Math.ceil(selectedMeal.proteins);
+    document.getElementById("meal-info-name").innerHTML = selectedMeal.mealName;
+    document.getElementById("meal-info-notes").innerHTML = selectedMeal.notes;
     document.getElementById("delete-meal-button").style = "display: inline";
     getIngredients(selectedMeal);
 }
-async function getIngredients(selectedMeal) {
-    document.querySelector("#ingredient-list tbody").innerHTML = "";
-    const docRef = collection(db, "users", window.findCookie("username"), "meals", selectedMeal, "ingredients");
-    const ingredients = await getDocs(docRef);
+function getIngredients(selectedMeal) {
+    console.log(selectedMeal);
+    //Set the ingredients
+    const ingredients = selectedMeal.ingredients;
     let iterator = 0;
     ingredients.forEach(ingredient => {
-      console.log("iterated: "+iterator)
-      ingredient = ingredient.data();
       let unit = "";
-      console.log("ingredient.unit: "+ingredient.unit)
-      console.log(ingredient);
       if (ingredient.unit != "amount-of-item") {
         unit = ingredient.unit
       }
@@ -887,16 +928,74 @@ async function getIngredients(selectedMeal) {
     document.querySelector(`#ingredient-${iterator}`).addEventListener("click", (element) => {
       element = element.target;
       let id = element.id.split("-")[1];
-      //If they clicked the ediit button
+      const currentIngredient = selectedMeal.ingredients[id]; 
+
+      //If they clicked the edit button
       if (element.id == `edit-${id}`) {
         document.querySelector(`#ingredient-${id} .info-view`).style = "display: none";
         document.querySelector(`#ingredient-${id} .info-edit`).style = "display: block";
-      } else if (element.id == `remove-${id}`) {//If they clicked the delete button
-        //do deleting of ingredients and re-calculating of meals macros here
-      } else if (element.id == `done-${id}`) { //If they clicked "done" under the edit menu
-        console.log(getEditMealInputs(id));
-        document.querySelector(`#ingredient-${id} .info-view`).style = "display: block";
-        document.querySelector(`#ingredient-${id} .info-edit`).style = "display: none";
+
+      //If they clicked the delete button
+      } else if (element.id == `remove-${id}`) {
+        
+        //Remove the macros from the current meal, round up
+        selectedMeal.calories = Math.ceil(Number(selectedMeal.calories) - Number(currentIngredient.calories));
+        selectedMeal.carbs = Math.ceil(Number(selectedMeal.carbs) - Number(currentIngredient.carbs));
+        selectedMeal.fats = Math.ceil(Number(selectedMeal.fats) - Number(currentIngredient.fats));
+        selectedMeal.proteins = Math.ceil(Number(selectedMeal.proteins) - Number(currentIngredient.proteins));
+        
+        //Remove the ingredient
+        selectedMeal.ingredients.splice(id, 1);
+
+        //Remove the old meal from DB
+        deleteMeal(selectedMeal.mealName)
+        .then(() => {
+          console.log("deleted "+selectedMeal.mealName)
+        })
+        .finally(() => {
+          //Add the new one when the other one is finished being deleted
+          addMeal(selectedMeal).then(() => {
+            console.log("added",selectedMeal)
+            //Reset everything
+            document.getElementById("select-meal-to-edit").selectedIndex = 0;
+            document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Ingredient Deleted";
+            document.querySelector("#edit-and-view-meal .status-text").style = "color: red";
+            newMealSelectOption.dispatchEvent(new Event("change"));
+            refreshUserMealsList();
+            })
+        })
+        
+      //If they clicked "done" under the edit menu
+      } else if (element.id == `done-${id}`) {
+        const editInputs = getEditMealInputs(id);
+        const macroDifference = calcMacroDifference(currentIngredient, editInputs);
+
+        //Set the values of the current ingredient to the inputted new values.
+        currentIngredient.calories = Number(editInputs.calories);
+        currentIngredient.carbs = Number(editInputs.carbs);
+        currentIngredient.fats = Number(editInputs.fats);
+        currentIngredient.proteins = Number(editInputs.proteins);
+        currentIngredient.size = editInputs.size;
+        currentIngredient.unit = editInputs.unit;
+
+        //Change the total macros of the meal
+        selectedMeal.calories = Math.ceil(Number(selectedMeal.calories) - Number(macroDifference.calories));
+        selectedMeal.carbs = Math.ceil(Number(selectedMeal.carbs) - Number(macroDifference.carbs));
+        selectedMeal.fats = Math.ceil(Number(selectedMeal.fats) - Number(macroDifference.fats));
+        selectedMeal.proteins = Math.ceil(Number(selectedMeal.proteins) - Number(macroDifference.proteins));
+        //Remove the old meal from DB
+        deleteMeal(selectedMeal.mealName)
+          .finally(() => {
+          //Add the edited meal to DB
+          addMeal(selectedMeal);
+          })
+        
+        //Reset everything
+        document.getElementById("select-meal-to-edit").selectedIndex = 0;
+        document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Ingredient Edited!";
+        document.querySelector("#edit-and-view-meal .status-text").style = "color: orange";
+        newMealSelectOption.dispatchEvent(new Event("change"));
+        refreshUserMealsList();
       } else {
         while (id == undefined || id == "") {
           id = element.parentNode.id.split("-")[1];
@@ -923,18 +1022,18 @@ async function getIngredients(selectedMeal) {
       document.querySelector("#ingredient-list tbody").innerHTML = "";
     }
 }
-async function refreshUserMealsList() {
-  const displayedMeals = [...document.querySelectorAll("option:not(:first-of-type)")];
+function refreshUserMealsList() {
+  const displayedMeals = [...document.querySelectorAll("#edit-and-view-meal option:not(:first-of-type)")];
     displayedMeals.forEach(element => {
       element.remove();
     });
-    const snapshot = await getDocs(collection(db, "users", username, "meals"));
-    snapshot.docs.forEach((doc) => {
-        newMealSelectOption.insertAdjacentHTML(
-            "beforeend",
-            `<option value="${doc.data().mealName}" class="user-meal">${doc.data().mealName}</option>`
-          )
-        })
+    let iterator = 0;
+    allMeals.forEach(meal => {
+      newMealSelectOption.insertAdjacentHTML(
+        "beforeend",
+        `<option value="${iterator++}" class="user-meal">${meal.mealName}</option>`
+      )
+    })
 }
 function getEditMealInputs(id) {
   return {
@@ -942,24 +1041,19 @@ function getEditMealInputs(id) {
     carbs: document.querySelector(`#carbs-input-${id}`).value,
     fats: document.querySelector(`#fats-input-${id}`).value,
     proteins: document.querySelector(`#proteins-input-${id}`).value,
-    servingSize: document.querySelector(`#serving-size-input-${id}`).value,
-    servingUnit: document.querySelector(`#serving-unit-input-${id}`).value,
+    size: document.querySelector(`#serving-size-input-${id}`).value,
+    unit: document.querySelector(`#serving-unit-input-${id}`).value,
   }
 }
-async function deleteMealFromDb(meal) {
-  const docRef = doc(db, "users", username, "meals", meal);
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-      await deleteDoc(docRef);
-      document.getElementById("select-meal-to-edit").selectedIndex = 0;
-      refreshUserMealsList();
-      document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Meal Deleted!";
-      document.querySelector("#edit-and-view-meal .status-text").style = "color: red";
-      newMealSelectOption.dispatchEvent(new Event("change"));
-  } else {
-      alert("Meal Dosent Exist");
-    }
+function calcMacroDifference(macros1, macros2) {
+  console.log(macros1, macros2)
+  console.log(Number(macros1.calories) - Number(macros2.calories))
+  return {
+    calories: (Number(macros1.calories) - Number(macros2.calories)),
+    carbs: (Number(macros1.carbs) - Number(macros2.carbs)),
+    fats: (Number(macros1.fats) - Number(macros2.fats)),
+    proteins: (Number(macros1.proteins) - Number(macros2.proteins)),
+  }
 }
 //Unfinished!!!!
 // async function editIngredientFromDb(info, ingredientName) {

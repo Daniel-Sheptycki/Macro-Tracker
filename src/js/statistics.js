@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase
 
 import { collection, getDoc, getDocs, getFirestore, query, setDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
-// import Chart from "../../node_modules/chart/index.js";
+// import Chart from "chart.js/auto"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
