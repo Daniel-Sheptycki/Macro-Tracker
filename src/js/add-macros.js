@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { collection, getDoc, getFirestore, doc, setDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
-import { addMeal, username, verifyValue } from "./firebase.js";
+import { collection, getDoc, getFirestore, doc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+import { addMeal, getCategorizedMeals, username, verifyValue, getAllMeals } from "./firebase.js";
 const firebaseConfig = {
 
   apiKey: "AIzaSyAD5cymjy1bLiXeb1KHG2txjtR4KpTn0p0",
@@ -30,7 +30,25 @@ let servingSizeActive = false;
 let mealSelected = false;
 let newMealSelectOption = document.getElementById("choose-from-meals");
 
-// Normal JS (so to speak)
+let allMeals;
+let categorizedMeals;
+
+getAllMeals()
+  //When all meals are retrieved
+  .then(returnedMeals => {
+    allMeals = returnedMeals;
+  })
+  .catch(error => {
+    console.error("Error fetching meals:", error);
+  });
+getCategorizedMeals()
+  .then(returnedMeals => {
+    categorizedMeals = returnedMeals;
+    refreshUserMealsList();
+  })  
+  .catch(error => {
+    console.error("Error fetching meals:", error);
+  });
 
 document.getElementById("add-macros-button").addEventListener("click", () => {
     addMacrosButtonClicked();
@@ -39,12 +57,7 @@ document.getElementById("new-meal-button").addEventListener("click", () => {
     newMealButtonClicked();
 })
 document.getElementById("choose-from-meals").addEventListener("change", () => {
-  updateMacrosInputField(newMealSelectOption.value, "simple")
-  if (!servingSizeActive) {
-    addServingSizeField();
-    servingSizeActive = true;
-    mealSelected = true;
-  }
+  updateMacrosInputField(newMealSelectOption.value)
 });
 refreshUserMealsList();
 function newMealButtonClicked() {
@@ -73,11 +86,11 @@ function addMacrosButtonClicked() {
     carbs: verifyValue(document.getElementById("input-carbs").value),
     fats: verifyValue(document.getElementById("input-fats").value),
     proteins: verifyValue(document.getElementById("input-proteins").value),
-    name: document.getElementById("input-meal-name").value,
+    mealName: document.getElementById("input-meal-name").value,
     notes: document.getElementById("input-meal-notes").value,
   }
   Object.assign(inputs, {ingredients: [{    
-    name: "Meal",
+    ingredientName: "Meal",
     calories: verifyValue(inputs.calories),
     carbs: verifyValue(inputs.carbs),
     fats: verifyValue(inputs.fats),
@@ -90,26 +103,14 @@ function addMacrosButtonClicked() {
   if (newMealMenu) addMeal(inputs);
   document.getElementById("add-macros-form").reset();
 }
-async function updateMacrosInputField(selectedMeal, type) {
-    // Recieves the "name" of the meal doc (which makes this hella easy)
-    const docRef = doc(db, "users", window.findCookie("username"), "meals", selectedMeal);
-    const docSnap = await getDoc(docRef);
-    let multiplier = 1;
-    if (type == "servingSizeUpdate") {
-      //Change the multiplier by the difference of the previous serving size and the new one
-      //Find new serving size
-      multiplier = Number(document.getElementById("serving-size-input").value) / Number(docSnap.data().servingAmount);
-      
-    }
-    else {
-      document.getElementById("serving-size-input").value = docSnap.data().servingAmount;
-    }
-    document.getElementById("input-calories").value = docSnap.data().calories * multiplier;
-    document.getElementById("input-carbs").value = docSnap.data().carbs * multiplier;
-    document.getElementById("input-fats").value = docSnap.data().fats * multiplier;
-    document.getElementById("input-proteins").value = docSnap.data().proteins * multiplier;
-    document.getElementById("input-meal-name").value = docSnap.data().mealName;
-    document.getElementById("input-meal-notes").value = docSnap.data().notes;
+async function updateMacrosInputField(id) {
+    const meal = allMeals[id];
+    document.getElementById("input-calories").value = meal.calories;
+    document.getElementById("input-carbs").value = meal.carbs;
+    document.getElementById("input-fats").value = meal.fats;
+    document.getElementById("input-proteins").value = meal.proteins;
+    document.getElementById("input-meal-name").value = meal.mealName;
+    document.getElementById("input-meal-notes").value = meal.notes;
 }
 async function addNewMacrosToDb(info) {
     const docRef = doc(db, "users", username, "macro-inputs", String(window.getDate("day")));
@@ -138,31 +139,38 @@ async function addNewMacrosToDb(info) {
     document.getElementById("meal-added-text").innerHTML = "Macros Added!"
 }
 async function refreshUserMealsList() {
-  const displayedMeals = document.getElementsByClassName("user-meal");
-  for (let i = 0; 0 < displayedMeals.length; i++) {
-    console.log(displayedMeals)
-    console.log(displayedMeals[0])
-    displayedMeals[0].remove();
-  }
-  const snapshot = await getDocs(collection(db, "users", window.findCookie("username"), "meals"));
-  snapshot.docs.forEach((doc) => {
-    newMealSelectOption.insertAdjacentHTML(
-        "beforeend",
-          `<option value="${doc.data().mealName}" class="user-meal">${doc.data().mealName}</option>`
-        )
-    })
+  const displayedMeals = [...document.querySelectorAll("#edit-and-view-meal option:not(:first-of-type)")];
+    displayedMeals.forEach(element => {
+      element.remove();
+    });
+    let htmlString = "<option value='undefined'>Select A Meal</option>";
+    //For each meal group
+    for (const object in categorizedMeals) {
+      const group = categorizedMeals[object];
+
+      //Add the OptGroup
+      htmlString += `<optgroup label="${object}">`;
+
+      //Add the options
+      group.forEach(meal => {
+        htmlString += `<option value="${meal.position}">${meal.mealName}</option>`
+      });
+      htmlString += "</optgroup>";
+    }
+    newMealSelectOption.innerHTML = htmlString;
 }
 async function addNewMacrosRecipt(info) {
-    if (info.name != null) {
+    if (!info.name) {
+      info.name == "Undefined";
+    }
     await addDoc(collection(db, "users", username, "macro-inputs", String(window.getDate("day")), "recipts"), {
-        mealName: info.name,
+        mealName: info.mealName,
         calories: info.calories,
         carbs: info.carbs,
         fats: info.fats,
         proteins: info.proteins,
         time: window.getDate("minute")
     })
-    }
 }
 function addServingSizeField() {
   document.getElementById("macros-input-field").insertAdjacentHTML("beforeend", `          

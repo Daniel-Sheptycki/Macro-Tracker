@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 
-import { getFirestore, doc, getDoc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -40,60 +40,48 @@ let username = window.findCookie("username");
 async function getAllMeals() {
   const snapshot = await getDocs(collection(db, "users", username, "meals"));
   let allMeals = [];
-
   for (const doc of snapshot.docs) {
-    const mealData = doc.data();
-    const mealId = doc.id;
-
-    // Fetch ingredients subcollection for the current meal
-    const ingredientsSnapshot = await getDocs(collection(db, "users", username, "meals", mealId, "ingredients"));
-    const ingredients = [];
-    ingredientsSnapshot.forEach(ingredientDoc => {
-      ingredients.push(ingredientDoc.data());
-    });
-    Object.assign(mealData, {ingredients: ingredients});
-    // Append the meal with its ingredients to allMeals array
-    allMeals.push(mealData);
+    allMeals.push(doc.data());
   }
-
   return allMeals;
+}
+//Returns object of categorized arrays
+async function getCategorizedMeals() {
+  const snapshot = await getDocs(collection(db, "users", username, "meals"));
+  const allMeals = snapshot.docs;
+
+  const groups = {}
+  let subIterator = 0;
+  //Assign all meals to their group
+  allMeals.forEach(meal => {
+    meal = meal.data();
+    //Set the meals position
+    meal.position = subIterator++;
+    //If it doesent have a group
+    if (meal.group == undefined) {
+      if (groups.Undefined == undefined) {
+        groups.Undefined = [];
+      }
+      groups.Undefined.push(meal);
+    }
+    //If its group hasnt been created yet
+    else if (groups[meal.group] == undefined) {
+      Object.assign(groups, {[meal.group]: [meal]});
+    }
+    //If its group has
+    else {
+      groups[meal.group].push(meal);
+    }
+  });
+  return groups;
 }
 //adds a meal to user database
 async function addMeal(meal) {
     const docRef = doc(db, "users", username, "meals", meal.mealName);
-    const docSnap = await getDoc(docRef);
-  
-    //If the meal doesent exist
-    if (!docSnap.exists()) 
-    {
-      await setDoc(docRef, {
-        calories: verifyValue(meal.calories),
-        carbs: verifyValue(meal.carbs),
-        fats: verifyValue(meal.fats),
-        proteins: verifyValue(meal.proteins),
-        mealName: meal.mealName,
-        notes: meal.notes
-      })
-      console.log("meal added")
-      meal.ingredients.forEach(ingredient => {
-        addIngredientToMeal(ingredient, meal.mealName);
-        console.log("ingredient added")
-      });
-    } 
-    else 
-    {
-      alert("Meal already exists!")
-    }
+    await setDoc(docRef, meal);
 }
 //remove meal by meal name
 async function deleteMeal(mealName) {
-  //Delete the ingredient from the meal first (for some reason, when you delete a document it lingers. and its sub-collections remain in tact. so when it is re-added, the collections remain the same when i would rather they be changed)
-  const ingredientsSnapshot = await getDocs(collection(db, "users", username, "meals", mealName, "ingredients"));
-  for (const ingredient of ingredientsSnapshot.docs) {
-    const docRef = doc(db, "users", username, "meals", mealName, "ingredients", ingredient.id);
-    await deleteDoc(docRef);
-  }
-  //Delete the meal
   const docRef = doc(db, "users", username, "meals", mealName);
   await deleteDoc(docRef);
 }
@@ -104,18 +92,5 @@ function verifyValue(value) {
         return value;
     }
 }
-//CHANGED IT TO "INGREDIENT NAME", MAKE ADJUSTEMNTS
-async function addIngredientToMeal(ingredient, mealName) {
-    const mealRef = doc(db, "users", username, "meals", mealName, "ingredients", ingredient.ingredientName);
-    await setDoc(mealRef, {
-      calories: ingredient.calories,
-      carbs: ingredient.carbs,
-      fats: ingredient.fats,
-      proteins: ingredient.proteins,
-      ingredientName: ingredient.ingredientName,
-      size: ingredient.size,
-      unit: ingredient.unit
-    })
-}
 
-  export { addMeal, username, verifyValue, getAllMeals, deleteMeal };
+  export { addMeal, username, verifyValue, getAllMeals, getCategorizedMeals, deleteMeal};

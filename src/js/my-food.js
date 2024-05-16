@@ -1,6 +1,6 @@
-import { addMeal, getAllMeals, deleteMeal } from "./firebase.js";
+import { addMeal, getAllMeals, deleteMeal, getCategorizedMeals } from "./firebase.js";
 
-// import Sortable from '../../sortable.complete.esm.js';
+import Sortable from '../../node_modules/sortablejs/modular/sortable.complete.esm.js';
 
 const commonIngredientsGroups = [
   { //Vegetables
@@ -205,6 +205,15 @@ const commonIngredientsGroups = [
         servingSize: 100, // 100 grams of ham
         servingUnit: "g"
     },
+    {
+      name: "Bacon",
+      calories: 541,
+      carbs: 0,
+      fats: 42,
+      proteins: 37,
+      servingSize: 5, // 5 pieces of bacon
+      servingUnit: "pieces"
+    },
     ]
   },
   { //Bread
@@ -272,7 +281,16 @@ const commonIngredientsGroups = [
         proteins: 10,
         servingSize: 1, // Representing the item itself
         servingUnit: ""
-    },
+      },
+      {
+        name: "White Bun",
+        calories: 265,
+        carbs: 50,
+        fats: 3,
+        proteins: 9,
+        servingSize: 1, // 1 white bun
+        servingUnit: ""
+      },
     ]
   },
   { //Rice
@@ -350,6 +368,33 @@ const commonIngredientsGroups = [
         proteins: 0,
         servingSize: 1,
         servingUnit: "oz"
+    },
+    {
+      name: "Avocado Oil",
+      calories: 124,
+      carbs: 0,
+      fats: 14,
+      proteins: 0,
+      servingSize: 1, // 1 tablespoon of avocado oil
+      servingUnit: "tbsp"
+    },
+    {
+      name: "Vegetable Oil",
+      calories: 120,
+      carbs: 0,
+      fats: 14,
+      proteins: 0,
+      servingSize: 1, // 1 tablespoon of vegetable oil
+      servingUnit: "tbsp"
+    },
+    {
+      name: "Canola Oil",
+      calories: 124,
+      carbs: 0,
+      fats: 14,
+      proteins: 0,
+      servingSize: 1, // 1 tablespoon of canola oil
+      servingUnit: "tbsp"
     },
     ]
   },
@@ -469,6 +514,15 @@ const commonIngredientsGroups = [
         servingSize: 50, // Average weight of one large egg in grams
         servingUnit: "g"
     },
+    {
+      name: "Butter",
+      calories: 102,
+      carbs: 0,
+      fats: 11.5,
+      proteins: 0.1,
+      servingSize: "1",
+      servingUnit: "tbsp"
+    },
     ]
   },
   { //Nuts
@@ -522,22 +576,33 @@ const commonIngredientsGroups = [
 
 // Initialize Firebase
 
-let allMeals = [];
+let allMeals;
+
+let categorizedMeals;
+
 getAllMeals()
   //When all meals are retrieved
   .then(returnedMeals => {
     allMeals = returnedMeals;
+  })
+  .catch(error => {
+    console.error("Error fetching meals:", error);
+  });
+getCategorizedMeals()
+  .then(returnedMeals => {
+    categorizedMeals = returnedMeals;
+    addSortedGroups();
     document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Meals Retrieved"
     document.querySelector("#edit-and-view-meal .status-text").style.color = "green";
     setTimeout(() => {
       document.querySelector("#edit-and-view-meal .status-text").innerHTML = "";
     }, 3000)
     refreshUserMealsList();
-  })
+    console.log(allMeals);
+  })  
   .catch(error => {
     console.error("Error fetching meals:", error);
   });
-
 let newMealSelectOption = document.getElementById("select-meal-to-edit");
 
 const mealMenu = document.getElementById("add-by-meal-inputs");
@@ -572,11 +637,26 @@ document.getElementById("delete-meal-button").addEventListener("click", () => {
         //Remove item from current list
         allMeals.splice(selectedMealId, 1);
 
+        //Remove it from the sorted list
+        for (const key in categorizedMeals) {
+          const group = categorizedMeals[key];
+          //Iterate through all the meals in the group
+          for (let i = 0; i < group.length; i++) {
+            //If it is the meal desired to be removed
+            if (group[i].position == selectedMealId) {
+              //Remove it from this group in the catergorizedMeals object
+              group.splice(i, 1);
+              break;
+            }
+          }
+        }
+
         //Reset everything
         document.getElementById("select-meal-to-edit").selectedIndex = 0;
         document.querySelector("#edit-and-view-meal .status-text").innerHTML = "Meal Deleted!";
         document.querySelector("#edit-and-view-meal .status-text").style = "color: red";
         newMealSelectOption.dispatchEvent(new Event("change"));
+        addSortedGroups();
         refreshUserMealsList();
       })
       //If something went wrong
@@ -616,6 +696,8 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
     carbs: document.getElementById("meal-carbs-input").value,
     fats: document.getElementById("meal-fats-input").value,
     proteins: document.getElementById("meal-protein-input").value,
+    position: allMeals.length,
+    group: "Uncategorized",
   }
   Object.assign(inputs, {ingredients: [{    
     ingredientName: "Meal",
@@ -629,6 +711,10 @@ document.getElementById("add-meal-button").addEventListener("click", () => {
   //Add new meal to DB passing the meal as a solo ingredient
   addMeal(inputs).then( function () {
     allMeals.push(inputs);
+
+    sortMeal(inputs);
+
+    addSortedGroups();
 
     refreshUserMealsList();
 
@@ -679,8 +765,13 @@ document.getElementById("ingredient-size-input").addEventListener("change", () =
 })
 //Add a new meal (ingredients)
 document.getElementById("add-meal-ingredient-button").addEventListener("click", () => {
-  //Assign the name and notes to the object.
-  Object.assign(mealInProgess, {mealName: prompt("What is your new meal's name?"), notes: prompt("Add notes for your new meal.")});
+  //Assign the name, notes, position, and group to the object.
+  Object.assign(mealInProgess, {
+    mealName: prompt("What is your new meal's name?"), 
+    notes: prompt("Add notes for your new meal."),    
+    position: allMeals.length,
+    group: "Uncategorized",
+  });
 
   console.log("adding: ",mealInProgess)
   //Add the meal in DB
@@ -688,6 +779,10 @@ document.getElementById("add-meal-ingredient-button").addEventListener("click", 
     .then(() => {
       allMeals.push(mealInProgess);
       
+      sortMeal(mealInProgess);
+
+      addSortedGroups();
+
       //Reset the meal in progress
       mealInProgess = {ingredientIterator: 0, calories: 0, carbs: 0, fats: 0, proteins: 0};
 
@@ -711,28 +806,100 @@ document.getElementById("add-meal-ingredient-button").addEventListener("click", 
       document.querySelector("#add-meal > header .status-text").style.color = "red";
     });
 });
+//Add a new categorie
+document.querySelector("fieldset i").addEventListener("click", () => {
+  //Get the name
+  const categorieName = prompt("What would you like to name your new categorie?");
+  
+  //Insert the HTML
+  document.getElementById("all-categories-wrapper").insertAdjacentHTML("afterbegin", 
+  `<fieldset><legend>${categorieName}</legend><ul class='meal-categorie' id='${categorieName}'></ul></fieldset>`)
+
+  //Add the new category to the current info
+  categorizedMeals[categorieName] = [];
+
+  //Add its sortable properties
+  addSortable(document.getElementById(categorieName), categorieName);
+})
 addCommonIngredients();
 
-// new Sortable(document.getElementById("item1"), {
-//   group: 'shared',
-//   animation: 150,
-//   onAdd: function (evt) {
-//     console.log("item added:", evt.item)
-//   },
-//   onRemove: function (evt) {
-//     console.log("item removed:", evt.item)
-//   }
-// }) 
-// new Sortable(document.getElementById("item2"), {
-//   group: 'shared',
-//   animation: 150,
-//   onAdd: function (evt) {
-//     console.log("item added:", evt.item)
-//   },
-//   onRemove: function (evt) {
-//     console.log("item removed:", evt.item)
-//   }
-// }) 
+function addSortable(element, tag) {
+  new Sortable(element,{
+    group: 'categorie',
+    animation: 150,
+    emptyInsertThreshold: 10,
+    //When a new item is added to it
+    onAdd: function (evt) {
+      //Get the meal that was added
+      const meal = allMeals[Number(evt.item.id)];
+
+      console.log("On Add: ", meal, evt.item.id);
+
+      //Set its group property to the group that it was added into
+      meal.group = tag;
+
+      //Change add it this group in the categorizedMeals object
+      categorizedMeals[tag].push(meal);
+
+      //Add it to db
+      addMeal(meal).then(() => {
+        console.log("meal updated")
+      })
+      setTimeout(() => {
+        refreshUserMealsList();
+      }, 200)
+    },
+    //When a item is removed
+    onRemove: function (evt) {
+      const meal = allMeals[Number(evt.item.id)];
+      const group = categorizedMeals[tag];
+
+      //Iterate through all the meals in the group
+      for (let i = 0; i < group.length; i++) {
+        //If it is the meal desired to be removed
+        if (group[i].mealName == meal.mealName) {
+          //Remove it from this group in the catergorizedMeals object
+          group.splice(i, 1);
+        }
+      }
+    }
+  })
+}
+function addSortedGroups() {
+  const container = document.getElementById("all-categories-wrapper");
+  console.log("groups: ",categorizedMeals)
+  let htmlString = "";
+  //Create DOM for each group
+  for (const group in categorizedMeals) {
+    //Get the key of the object
+    const objectKey = group;
+    const object = categorizedMeals[group]
+    //Set the html string to the opening of the ul, the id to the key of the object
+    htmlString += `<fieldset><legend>${objectKey}</legend><ul class='meal-categorie' id='${objectKey}'>`;
+    
+    //Foreach meal in the group
+    object.forEach(meal => {
+      //Add its list item to the string
+      htmlString += `<li id=${meal.position}>${meal.mealName}</li>`;
+    })
+
+    //Close the tags
+    htmlString += "</ul></fieldset>";
+  }
+  //Set the html
+  container.innerHTML = htmlString;
+
+  //Add its sortable properties
+  for (const group in categorizedMeals) {
+    addSortable(document.getElementById(group), group);
+  }
+}
+//Adds a meal to the categorizedMeal object
+function sortMeal(meal) {
+  if (categorizedMeals[meal.group] == undefined) {
+    categorizedMeals[meal.group] = [meal];
+  }
+}
 function addIngredientToMealInProgress(ingredient) {
   function addNumbers() {
     //Update big numbers
@@ -1027,13 +1194,22 @@ function refreshUserMealsList() {
     displayedMeals.forEach(element => {
       element.remove();
     });
-    let iterator = 0;
-    allMeals.forEach(meal => {
-      newMealSelectOption.insertAdjacentHTML(
-        "beforeend",
-        `<option value="${iterator++}" class="user-meal">${meal.mealName}</option>`
-      )
-    })
+    let htmlString = "<option value='undefined'>Select A Meal</option>";
+    //For each meal group
+    for (const object in categorizedMeals) {
+      const group = categorizedMeals[object];
+      if (group && group.length) {
+      //Add the OptGroup
+      htmlString += `<optgroup label="${object}">`;
+
+      //Add the options
+      group.forEach(meal => {
+        htmlString += `<option value="${meal.position}">${meal.mealName}</option>`
+      });
+      htmlString += "</optgroup>";
+    }
+    document.getElementById("select-meal-to-edit").innerHTML = htmlString;
+    }
 }
 function getEditMealInputs(id) {
   return {

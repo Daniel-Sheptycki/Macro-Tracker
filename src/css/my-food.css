@@ -252,28 +252,43 @@ main > header h2 {
     flex-direction: column;
     align-items: center;
 }
-select optgroup {
-    font-style: normal;
-    border-bottom: 1px solid gray;
-}
-select option, select optgroup {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
+/* Categorize */
 #categorize-content-wrapper {
     margin: 0 auto;
     width: 90%;
     fieldset {
         padding: 1rem 2rem;
         position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
         i {
             position: absolute;
             top: 0%;
             right: 1%;
             cursor: pointer;
         }
+        fieldset {
+            max-width: 330px;
+            max-height: 300px;
+            overflow: scroll;
+            ul {
+                width: 100%;
+                list-style: none;
+                li {
+                    padding: 1rem;
+                    width: 100%;
+                    border: 1px solid gray;
+                }
+            }
+        }
     }
     #all-categories-wrapper {
-
+        justify-content: space-evenly;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
     .parent {
         display: flex;
@@ -282,7 +297,6 @@ select option, select optgroup {
         }
     }
 }
-
 @media screen and (max-width: 550px) {
     #add-by-ingredients .add-meal-section {
         width: 275px;
