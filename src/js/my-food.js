@@ -1,6 +1,6 @@
 import { addMeal, getAllMeals, deleteMeal, getCategorizedMeals } from "./firebase.js";
 
-import Sortable from 'https://raw.githubusercontent.com/SortableJS/Sortable/master/modular/sortable.complete.esm.js';
+import Sortable from './sortable.esm.js';
 
 const commonIngredientsGroups = [
   { //Vegetables
